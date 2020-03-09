@@ -23,8 +23,8 @@ namespace ActiveStorage.Sqlite
 		public async Task<int> ExecuteAsync(string connectionString, string sql, Dictionary<string, object> parameters)
 		{
 			await using var db = new SqliteConnection(connectionString);
-			var inserted = await db.ExecuteAsync(sql, parameters);
-			return inserted;
+			var result = await db.ExecuteAsync(sql, parameters);
+			return result;
 		}
 
 		public bool TryFetchInsertedKey(FetchInsertedKeyLocation location, out string sql)

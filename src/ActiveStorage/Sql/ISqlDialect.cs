@@ -16,9 +16,8 @@ namespace ActiveStorage.Sql
 		char? Parameter { get; }
 		char? Quote { get; }
 
-		bool TryFetchInsertedKey(FetchInsertedKeyLocation location, out string sql);
-
 		Task<int> ExecuteAsync(string connectionString, string sql, Dictionary<string, object> parameters);
+		bool TryFetchInsertedKey(FetchInsertedKeyLocation location, out string sql);
 
 		string ResolveTableName(AccessorMembers members) => !members.DeclaringType.TryGetAttribute(true, out TableAttribute attribute) ? members.DeclaringType.GetNonGenericName() : attribute.Name;
 		string ResolveSchemaName(AccessorMembers members) => !members.DeclaringType.TryGetAttribute(true, out TableAttribute attribute) ? null : attribute.Schema;

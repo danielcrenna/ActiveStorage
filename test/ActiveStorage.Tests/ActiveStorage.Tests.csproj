@@ -8,11 +8,10 @@
   <ItemGroup>
     <PackageReference Include="FluentMigrator.Runner" Version="3.2.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
-    <PackageReference Include="TestKitchen" Version="0.0.3" />
-    <PackageReference Include="TestKitchen.TestAdapter" Version="0.0.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\TestKitchen\src\TestKitchen.TestAdapter\TestKitchen.TestAdapter.csproj" />
     <ProjectReference Include="..\..\src\ActiveStorage.Azure.Cosmos\ActiveStorage.Azure.Cosmos.csproj" />
     <ProjectReference Include="..\..\src\ActiveStorage.Azure.TableStorage\ActiveStorage.Azure.TableStorage.csproj" />
     <ProjectReference Include="..\..\src\ActiveStorage.Sqlite\ActiveStorage.Sqlite.csproj" />
