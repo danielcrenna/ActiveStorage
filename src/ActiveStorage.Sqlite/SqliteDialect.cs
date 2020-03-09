@@ -1,17 +1,31 @@
 ﻿// Copyright (c) Daniel Crenna & Contributors. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using ActiveStorage.Sql;
+using ActiveStorage.Sqlite.Internal;
+using Dapper;
+using Microsoft.Data.Sqlite;
 
-namespace ActiveStorage.Sqlite.Internal
+namespace ActiveStorage.Sqlite
 {
-	internal sealed class SqliteDialect : ISqlDialect
+	public sealed class SqliteDialect : ISqlDialect
 	{
+		static SqliteDialect() => SqlMapper.AddTypeHandler(DateTimeOffsetHandler.Default);
+
 		public char? StartIdentifier => '\"';
 		public char? EndIdentifier => '\"';
 		public char? Separator => '.';
 		public char? Parameter => ':';
 		public char? Quote => '\'';
+
+		public async Task<int> ExecuteAsync(string connectionString, string sql, Dictionary<string, object> parameters)
+		{
+			await using var db = new SqliteConnection(connectionString);
+			var inserted = await db.ExecuteAsync(sql, parameters);
+			return inserted;
+		}
 
 		public bool TryFetchInsertedKey(FetchInsertedKeyLocation location, out string sql)
 		{

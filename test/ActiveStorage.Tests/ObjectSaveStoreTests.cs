@@ -4,6 +4,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using ActiveStorage.Internal;
+using ActiveStorage.Sql;
 using ActiveStorage.Sqlite;
 using ActiveStorage.Tests.Fixtures;
 using ActiveStorage.Tests.Migrations.SimpleObject;
@@ -25,8 +26,7 @@ namespace ActiveStorage.Tests
 		{
 			using var db = new SqliteFixture<SimpleObject>();
 
-			var fields = new IFieldTransform[] {new CreatedAtTransform(() => DateTimeOffset.UtcNow)};
-			var store = new SqliteObjectSaveStore(db.ConnectionString, fields);
+			var store = new SqlObjectSaveStore(db.ConnectionString, new SqliteDialect(), new AttributeDataInfoProvider(), new CreatedAtTransform(() => DateTimeOffset.UtcNow));
 			var result = store.SaveAsync(new DataRow {Id = 1}).Result;
 			if (!result.Succeeded)
 				return false;
