@@ -7,31 +7,36 @@ using System.Diagnostics;
 using System.IO;
 using ActiveStorage.Tests.Internal;
 using Dapper;
-using Microsoft.Data.Sqlite;
 
 namespace ActiveStorage.Tests.Fixtures
 {
-	public class SqlServerFixture<TMigrationInfo> : SqlFixture, IDatabaseFixture
+	public class SqlServerFixture<TMigrationInfo> : SqlFixture
 	{
-		public SqlServerFixture(string connectionString) : base(new SqliteConnection(connectionString))
+		private readonly string _connectionString;
+		private readonly string _database;
+
+		public SqlServerFixture(string connectionString) : base(new SqlConnection(connectionString))
 		{
 			var runner = new SqlServerMigrationRunner(connectionString);
 			runner.CreateDatabaseIfNotExists();
 			runner.MigrateUp(typeof(TMigrationInfo).Assembly, typeof(TMigrationInfo).Namespace);
+
+			_connectionString = connectionString;
+			_database = new SqlConnectionStringBuilder(connectionString).InitialCatalog;
 		}
 
 		protected override void Dispose(bool disposing)
 		{
 			base.Dispose(disposing);
 
-			var builder = new SqlConnectionStringBuilder(ConnectionString) {InitialCatalog = "master"};
+			var builder = new SqlConnectionStringBuilder(_connectionString) {InitialCatalog = "master"};
 			using (var db = new SqlConnection(builder.ConnectionString))
 			{
 				db.Open();
 				try
 				{
-					db.Execute($"ALTER DATABASE [{Database}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE");
-					db.Execute($"DROP DATABASE [{Database}]");
+					db.Execute($"ALTER DATABASE [{_database}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE");
+					db.Execute($"DROP DATABASE [{_database}]");
 				}
 				catch (SqlException e)
 				{
@@ -44,7 +49,7 @@ namespace ActiveStorage.Tests.Fixtures
 				case SqlConnection connection when connection.DataSource != null:
 					try
 					{
-						File.Delete($"{Database}.mdf");
+						File.Delete(SqlServerMigrationRunner.DatabaseFileName(_database));
 					}
 					catch (Exception e)
 					{

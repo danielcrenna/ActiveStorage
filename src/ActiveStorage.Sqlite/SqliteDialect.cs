@@ -20,13 +20,6 @@ namespace ActiveStorage.Sqlite
 		public char? Parameter => ':';
 		public char? Quote => '\'';
 
-		public async Task<int> ExecuteAsync(string connectionString, string sql, Dictionary<string, object> parameters)
-		{
-			await using var db = new SqliteConnection(connectionString);
-			var result = await db.ExecuteAsync(sql, parameters);
-			return result;
-		}
-
 		public bool TryFetchInsertedKey(FetchInsertedKeyLocation location, out string sql)
 		{
 			switch (location)
@@ -41,6 +34,13 @@ namespace ActiveStorage.Sqlite
 					sql = null;
 					return false;
 			}
+		}
+
+		public async Task<int> ExecuteAsync(string connectionString, string sql, Dictionary<string, object> parameters)
+		{
+			await using var db = new SqliteConnection(connectionString);
+			var result = await db.ExecuteAsync(sql, parameters);
+			return result;
 		}
 	}
 }

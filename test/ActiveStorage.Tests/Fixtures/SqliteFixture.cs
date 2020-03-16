@@ -9,7 +9,7 @@ using Microsoft.Data.Sqlite;
 
 namespace ActiveStorage.Tests.Fixtures
 {
-	public class SqliteFixture<TMigrationInfo> : SqlFixture, IDatabaseFixture
+	public class SqliteFixture<TMigrationInfo> : SqlFixture
 	{
 		public SqliteFixture(string connectionString) : base(new SqliteConnection(connectionString))
 		{

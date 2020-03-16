@@ -6,7 +6,7 @@ using FluentMigrator;
 namespace ActiveStorage.Tests.Migrations.SimpleObject
 {
 	[Migration(1)]
-	public class SimpleObject : AutoReversingMigration
+	public class AddSimpleObject : AutoReversingMigration
 	{
 		public override void Up()
 		{

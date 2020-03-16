@@ -4,6 +4,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
+using System.Threading.Tasks;
 using ActiveStorage.Internal;
 using ActiveStorage.Sql;
 using ActiveStorage.Sqlite;
@@ -13,28 +14,35 @@ using Dapper;
 
 namespace ActiveStorage.Tests
 {
-	public class SqliteObjectSaveStoreTests : SqlObjectSaveStoreTests
+	public class SqliteObjectSaveStoreTests
 	{
-		public override ISqlDialect Dialect => new SqliteDialect();
-		public override IDbConnection CreateFixture<TMigrationInfo>() => new SqliteFixture<TMigrationInfo>($"Data Source={Guid.NewGuid()}.db");
+		public IDbConnection CreateFixture<TMigrationInfo>() => new SqliteFixture<TMigrationInfo>(CreateConnectionString());
 
-		public bool Empty_database_has_no_objects()
+		private static string CreateConnectionString()
 		{
-			using var db = CreateFixture<SimpleObject>();
-			var count = db.QuerySingle<int>("SELECT COUNT(1) FROM 'Object'");
+			return $"Data Source={Guid.NewGuid()}.db";
+		}
+
+		public async Task<bool> Empty_database_has_no_objects()
+		{
+			using var db = CreateFixture<AddSimpleObject>();
+			db.Open();
+
+			var count = await db.QuerySingleAsync<int>("SELECT COUNT(1) FROM 'Object'");
 			return count == 0;
 		}
 
-		public bool Can_save_object_to_store()
+		public async Task<bool> Can_save_object_to_store()
 		{
-			using var db = CreateFixture<SimpleObject>();
+			using var db = CreateFixture<AddSimpleObject>();
+			db.Open();
 
-			var store = new SqlObjectSaveStore(db.ConnectionString, Dialect, new AttributeDataInfoProvider(), new CreatedAtTransform(() => DateTimeOffset.UtcNow));
-			var result = store.SaveAsync(new DataRow {Id = 1}).Result;
+			var store = new SqlObjectSaveStore(db.ConnectionString, new SqliteDialect(), new AttributeDataInfoProvider(), new CreatedAtTransform(() => DateTimeOffset.UtcNow));
+			var result = await store.SaveAsync(new DataRow {Id = 1});
 			if (!result.Succeeded)
 				return false;
 
-			var count = db.QuerySingle<int>("SELECT COUNT(1) FROM 'Object'");
+			var count = await db.QuerySingleAsync<int>("SELECT COUNT(1) FROM 'Object'");
 			return count == 1;
 		}
 
