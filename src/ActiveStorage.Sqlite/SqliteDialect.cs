@@ -36,6 +36,22 @@ namespace ActiveStorage.Sqlite
 			}
 		}
 
+		public async Task<IEnumerable<T>> QueryAsync<T>(string connectionString, string sql,
+			Dictionary<string, object> parameters)
+		{
+			await using var db = new SqliteConnection(connectionString);
+			var result = await db.QueryAsync<T>(sql, parameters);
+			return result;
+		}
+
+		public async Task<T> QuerySingleAsync<T>(string connectionString, string sql,
+			Dictionary<string, object> parameters)
+		{
+			await using var db = new SqliteConnection(connectionString);
+			var result = await db.QuerySingleAsync<T>(sql, parameters);
+			return result;
+		}
+
 		public async Task<int> ExecuteAsync(string connectionString, string sql, Dictionary<string, object> parameters)
 		{
 			await using var db = new SqliteConnection(connectionString);

@@ -4,6 +4,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using ActiveStorage.Sqlite;
 using ActiveStorage.Tests.Internal;
 using Microsoft.Data.Sqlite;
 
@@ -11,29 +12,39 @@ namespace ActiveStorage.Tests.Fixtures
 {
 	public class SqliteFixture<TMigrationInfo> : SqlFixture
 	{
-		public SqliteFixture(string connectionString) : base(new SqliteConnection(connectionString))
+		public SqliteFixture() : base(new SqliteConnection($"Data Source={Guid.NewGuid()}.db"), new SqliteDialect())
 		{
-			var runner = new SqliteMigrationRunner(connectionString);
+			var runner = new SqliteMigrationRunner(Connection.ConnectionString);
 			runner.CreateDatabaseIfNotExists();
 			runner.MigrateUp(typeof(TMigrationInfo).Assembly, typeof(TMigrationInfo).Namespace);
 		}
 
 		protected override void Dispose(bool disposing)
 		{
-			base.Dispose(disposing);
-
-			switch (Connection)
+			if (Connection is SqliteConnection connection)
 			{
-				case SqliteConnection connection when connection.DataSource != null:
-					try
-					{
-						File.Delete(connection.DataSource);
-					}
-					catch (Exception e)
-					{
-						Trace.TraceError(e.ToString());
-					}
-					break;
+				var dataSource = connection.DataSource;
+
+				base.Dispose(disposing);
+
+				switch (Connection)
+				{
+					case SqliteConnection _ when dataSource != null:
+						try
+						{
+							File.Delete(dataSource);
+						}
+						catch (Exception e)
+						{
+							Trace.TraceError(e.ToString());
+						}
+
+						break;
+				}
+			}
+			else
+			{
+				base.Dispose(disposing);
 			}
 		}
 	}

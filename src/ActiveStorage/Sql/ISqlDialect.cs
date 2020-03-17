@@ -16,11 +16,29 @@ namespace ActiveStorage.Sql
 		char? Parameter { get; }
 		char? Quote { get; }
 
-		Task<int> ExecuteAsync(string connectionString, string sql, Dictionary<string, object> parameters);
+		Task<IEnumerable<T>> QueryAsync<T>(string connectionString, string sql,
+			Dictionary<string, object> parameters = null);
+
+		Task<T> QuerySingleAsync<T>(string connectionString, string sql, Dictionary<string, object> parameters = null);
+		Task<int> ExecuteAsync(string connectionString, string sql, Dictionary<string, object> parameters = null);
+
 		bool TryFetchInsertedKey(FetchInsertedKeyLocation location, out string sql);
 
-		string ResolveTableName(AccessorMembers members) => !members.DeclaringType.TryGetAttribute(true, out TableAttribute attribute) ? members.DeclaringType.GetNonGenericName() : attribute.Name;
-		string ResolveSchemaName(AccessorMembers members) => !members.DeclaringType.TryGetAttribute(true, out TableAttribute attribute) ? null : attribute.Schema;
-		string ResolveColumnName(AccessorMember member) => !member.TryGetAttribute(out ColumnAttribute attribute) ? member.Name : attribute.Name;
+		string ResolveTableName(AccessorMembers members)
+		{
+			return !members.DeclaringType.TryGetAttribute(true, out TableAttribute attribute)
+				? members.DeclaringType.GetNonGenericName()
+				: attribute.Name;
+		}
+
+		string ResolveSchemaName(AccessorMembers members)
+		{
+			return !members.DeclaringType.TryGetAttribute(true, out TableAttribute attribute) ? null : attribute.Schema;
+		}
+
+		string ResolveColumnName(AccessorMember member)
+		{
+			return !member.TryGetAttribute(out ColumnAttribute attribute) ? member.Name : attribute.Name;
+		}
 	}
 }

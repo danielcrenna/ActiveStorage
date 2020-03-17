@@ -6,14 +6,16 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using ActiveErrors;
+using ActiveStorage.Sql.Builders;
 using TypeKitchen;
 
 namespace ActiveStorage.Sql
 {
-	public class SqlObjectSaveStore : IObjectSaveStore
+	public sealed class SqlObjectSaveStore : IObjectSaveStore
 	{
 		private readonly string _connectionString;
 		private readonly ISqlDialect _dialect;
+
 		private readonly IEnumerable<IFieldTransform> _fieldTransforms;
 		private readonly IDataInfoProvider _provider;
 
@@ -26,7 +28,7 @@ namespace ActiveStorage.Sql
 			_provider = provider;
 		}
 
-		public virtual async Task<Operation<ObjectSave>> SaveAsync(object @object, params string[] fields)
+		public async Task<Operation<ObjectSave>> SaveAsync(object @object, params string[] fields)
 		{
 			var accessor = ReadAccessor.Create(@object, AccessorMemberTypes.Properties, AccessorMemberScope.Public,
 				out var members);
@@ -48,7 +50,8 @@ namespace ActiveStorage.Sql
 				{
 					foreach (var field in fields)
 					{
-						if (members.TryGetValue(field, out var member) && !_provider.IsIgnored(member) && _provider.IsSaved(member))
+						if (members.TryGetValue(field, out var member) && !_provider.IsIgnored(member) &&
+						    _provider.IsSaved(member))
 						{
 							columns.Add(member);
 						}
@@ -72,7 +75,8 @@ namespace ActiveStorage.Sql
 				}
 
 				var sql = _dialect.InsertInto(members, columns, false);
-				var parameters = columns.ToDictionary(k => $"{_dialect.Parameter}{_dialect.ResolveColumnName(k)}", v => hash[v.Name]);
+				var parameters = columns.ToDictionary(k => $"{_dialect.Parameter}{_dialect.ResolveColumnName(k)}",
+					v => hash[v.Name]);
 				var inserted = await _dialect.ExecuteAsync(_connectionString, sql, parameters);
 
 				Debug.Assert(inserted == 1);

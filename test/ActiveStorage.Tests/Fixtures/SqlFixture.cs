@@ -3,16 +3,20 @@
 
 using System;
 using System.Data;
+using ActiveStorage.Internal;
+using ActiveStorage.Sql;
 
 namespace ActiveStorage.Tests.Fixtures
 {
-	public abstract class SqlFixture : IDbConnection
+	public abstract class SqlFixture : ISqlStoreFixture
 	{
+		private readonly ISqlDialect _dialect;
 		protected readonly IDbConnection Connection;
 
-		protected SqlFixture(IDbConnection connection)
+		protected SqlFixture(IDbConnection connection, ISqlDialect dialect)
 		{
 			Connection = connection;
+			_dialect = dialect;
 		}
 
 		public IDbTransaction BeginTransaction()
@@ -57,6 +61,23 @@ namespace ActiveStorage.Tests.Fixtures
 
 		public ConnectionState State => Connection.State;
 
+		public void Dispose()
+		{
+			Dispose(true);
+		}
+
+		public IObjectCountStore GetCountStore()
+		{
+			return new SqlObjectCountStore(ConnectionString, _dialect);
+		}
+
+		public IObjectSaveStore GetSaveStore()
+		{
+			return new SqlObjectSaveStore(ConnectionString, _dialect,
+				new AttributeDataInfoProvider(),
+				new CreatedAtTransform(() => DateTimeOffset.UtcNow));
+		}
+
 		protected virtual void Dispose(bool disposing)
 		{
 			if (!disposing)
@@ -65,11 +86,6 @@ namespace ActiveStorage.Tests.Fixtures
 			Connection?.Dispose();
 			GC.Collect();
 			GC.WaitForPendingFinalizers();
-		}
-
-		public void Dispose()
-		{
-			Dispose(true);
 		}
 	}
 }

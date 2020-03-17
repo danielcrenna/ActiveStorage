@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using TypeKitchen;
 
-namespace ActiveStorage.Sql
+namespace ActiveStorage.Sql.Builders
 {
 	internal static class InsertBuilder
 	{

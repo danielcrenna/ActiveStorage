@@ -28,6 +28,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestKitchen", "..\TestKitch
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestKitchen.TestAdapter", "..\TestKitchen\src\TestKitchen.TestAdapter\TestKitchen.TestAdapter.csproj", "{2549F7CB-CA84-4313-9C00-214E2E1E318C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deps", "deps", "{4360B6C5-F1CD-4054-ADE8-8E4B7B63108D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,6 +88,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FA0E5D54-737A-4944-82D6-6F6CE54EC18E} = {4360B6C5-F1CD-4054-ADE8-8E4B7B63108D}
+		{2549F7CB-CA84-4313-9C00-214E2E1E318C} = {4360B6C5-F1CD-4054-ADE8-8E4B7B63108D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D3E6AB14-854B-4F3B-BDB6-844A598A9892}
