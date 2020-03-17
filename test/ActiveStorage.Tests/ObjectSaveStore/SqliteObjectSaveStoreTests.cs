@@ -31,7 +31,8 @@ namespace ActiveStorage.Tests.ObjectSaveStore
 			using var db = new SqliteFixture<AddSimpleObject>();
 			db.Open();
 
-			var store = new SqlObjectSaveStore(db.ConnectionString, new SqliteDialect(), new AttributeDataInfoProvider(), new CreatedAtTransform(() => DateTimeOffset.UtcNow));
+			var store = new SqlObjectSaveStore(db.ConnectionString, new SqliteDialect(),
+				new AttributeDataInfoProvider(), new CreatedAtTransform(() => DateTimeOffset.UtcNow));
 			var result = await store.SaveAsync(new SimpleObject {Id = 1});
 			if (!result.Succeeded)
 				return false;

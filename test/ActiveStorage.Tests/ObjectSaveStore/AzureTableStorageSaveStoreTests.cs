@@ -22,7 +22,7 @@ namespace ActiveStorage.Tests.ObjectSaveStore
 		{
 			using var db = new AzureTableStorageFixture();
 			await db.OpenAsync();
-			
+
 			var store = db.GetSaveStore();
 			var result = await store.SaveAsync(new SimpleObject {Id = 1});
 			if (!result.Succeeded || result.Data != ObjectSave.Created)

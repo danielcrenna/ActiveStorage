@@ -5,7 +5,6 @@ using System.Text;
 
 namespace ActiveStorage.Sql
 {
-
 	internal static class StringBuilderExtensions
 	{
 		public static StringBuilder AppendTable(this StringBuilder sb, ISqlDialect d, string table, string schema)

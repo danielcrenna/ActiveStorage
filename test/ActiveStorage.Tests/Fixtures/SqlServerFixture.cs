@@ -23,7 +23,12 @@ namespace ActiveStorage.Tests.Fixtures
 		private static string CreateConnectionString()
 		{
 			var database = $"{Guid.NewGuid().ToString("N").ToUpperInvariant()}";
-			var builder = new SqlConnectionStringBuilder("Data Source=(localdb)\\MSSQLLocalDB;Integrated Security=true;MultipleActiveResultSets=true") {InitialCatalog = "master"};
+			var builder =
+				new SqlConnectionStringBuilder(
+					"Data Source=(localdb)\\MSSQLLocalDB;Integrated Security=true;MultipleActiveResultSets=true")
+				{
+					InitialCatalog = "master"
+				};
 			using (var connection = new SqlConnection(builder.ConnectionString))
 			{
 				connection.Open();
@@ -34,6 +39,7 @@ namespace ActiveStorage.Tests.Fixtures
 				connection.Execute($"ALTER DATABASE [{database}] SET READ_COMMITTED_SNAPSHOT ON;");
 				connection.Execute($"ALTER DATABASE [{database}] SET ALLOW_SNAPSHOT_ISOLATION ON;");
 			}
+
 			builder.InitialCatalog = database;
 			return builder.ConnectionString;
 		}
@@ -71,6 +77,7 @@ namespace ActiveStorage.Tests.Fixtures
 					{
 						Trace.TraceError(e.ToString());
 					}
+
 					break;
 			}
 		}

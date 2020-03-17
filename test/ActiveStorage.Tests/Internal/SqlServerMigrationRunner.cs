@@ -13,7 +13,7 @@ namespace ActiveStorage.Tests.Internal
 	internal sealed class SqlServerMigrationRunner : MigrationRunner
 	{
 		public SqlServerMigrationRunner(string connectionString) : base(connectionString) { }
-		
+
 		public override void CreateDatabaseIfNotExists()
 		{
 			var builder = new SqlConnectionStringBuilder(ConnectionString);
@@ -28,7 +28,10 @@ namespace ActiveStorage.Tests.Internal
 			Debug.Assert(File.Exists(fileName));
 		}
 
-		public static string DatabaseFileName(string databaseName) => Path.Combine(EnsureOutputDir(), $"{databaseName}.mdb");
+		public static string DatabaseFileName(string databaseName)
+		{
+			return Path.Combine(EnsureOutputDir(), $"{databaseName}.mdb");
+		}
 
 		public static string EnsureOutputDir()
 		{
