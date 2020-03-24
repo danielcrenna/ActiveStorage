@@ -12,7 +12,7 @@ namespace ActiveStorage.Sql.Builders
 			return Pooling.StringBuilderPool.Scoped(sb =>
 			{
 				sb.Append("SELECT ");
-				sb.Append("COUNT(1) FROM");
+				sb.Append("COUNT(1) FROM ");
 				sb.AppendTable(d, d.ResolveTableName(members), d.ResolveSchemaName(members));
 			});
 		}

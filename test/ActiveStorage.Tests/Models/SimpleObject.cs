@@ -4,7 +4,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ActiveStorage.Tests.ObjectSaveStore
+namespace ActiveStorage.Tests.Models
 {
 	[Table("Object")]
 	public class SimpleObject

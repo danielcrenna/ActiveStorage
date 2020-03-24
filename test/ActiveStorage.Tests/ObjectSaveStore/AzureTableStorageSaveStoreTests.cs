@@ -3,6 +3,7 @@
 
 using System.Threading.Tasks;
 using ActiveStorage.Tests.Fixtures;
+using ActiveStorage.Tests.Models;
 
 namespace ActiveStorage.Tests.ObjectSaveStore
 {

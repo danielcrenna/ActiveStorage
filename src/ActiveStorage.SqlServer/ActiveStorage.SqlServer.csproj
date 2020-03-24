@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ActiveStorage\ActiveStorage.csproj" />
+    <ProjectReference Include="..\ActiveStorage.Sql\ActiveStorage.Sql.csproj" />
   </ItemGroup>
 
 </Project>

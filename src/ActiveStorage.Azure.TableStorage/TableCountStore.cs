@@ -15,7 +15,7 @@ namespace ActiveStorage.Azure.TableStorage
 
 		public TableCountStore(CloudTable table) => _table = table;
 
-		public async Task<Operation<ulong>> CountAsync(Type type)
+		public async Task<Operation<ulong>> CountAsync(Type type, CancellationToken cancellationToken = default)
 		{
 			var count = 0L;
 			TableContinuationToken token = null;
@@ -23,12 +23,17 @@ namespace ActiveStorage.Azure.TableStorage
 			do
 			{
 				var result = await _table.ExecuteQuerySegmentedAsync(query, token);
-				foreach (var item in result.Results)
+				foreach (var _ in result.Results)
 					Interlocked.Increment(ref count);
 				token = result.ContinuationToken;
 			} while (token != null);
 
 			return new Operation<ulong>((ulong) count);
+		}
+
+		public async Task<Operation<ulong>> CountAsync<T>(CancellationToken cancellationToken = default)
+		{
+			return await CountAsync(typeof(T), cancellationToken);
 		}
 	}
 }

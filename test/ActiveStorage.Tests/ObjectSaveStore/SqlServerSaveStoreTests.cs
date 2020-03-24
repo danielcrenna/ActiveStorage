@@ -4,6 +4,7 @@
 using System.Threading.Tasks;
 using ActiveStorage.Tests.Fixtures;
 using ActiveStorage.Tests.Migrations.SimpleObject;
+using ActiveStorage.Tests.Models;
 
 namespace ActiveStorage.Tests.ObjectSaveStore
 {

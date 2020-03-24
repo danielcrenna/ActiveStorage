@@ -89,7 +89,6 @@ namespace ActiveStorage.Azure.TableStorage
 								accessor[_entity, member.Name] = property.DateTimeOffsetValue.GetValueOrDefault();
 								continue;
 							}
-
 							if (member.Type == typeof(DateTimeOffset?))
 								accessor[_entity, member.Name] = property.DateTimeOffsetValue;
 							continue;
