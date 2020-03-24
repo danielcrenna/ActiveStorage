@@ -6,7 +6,6 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
 using ActiveStorage.SqlServer;
-using ActiveStorage.Tests.Internal;
 using Dapper;
 
 namespace ActiveStorage.Tests.Fixtures

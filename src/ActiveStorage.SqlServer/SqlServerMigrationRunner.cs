@@ -7,10 +7,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using FluentMigrator.Runner;
+using MigrationRunner = ActiveStorage.Sql.MigrationRunner;
 
-namespace ActiveStorage.Tests.Internal
+namespace ActiveStorage.SqlServer
 {
-	internal sealed class SqlServerMigrationRunner : MigrationRunner
+	public sealed class SqlServerMigrationRunner : MigrationRunner
 	{
 		public SqlServerMigrationRunner(string connectionString) : base(connectionString) { }
 

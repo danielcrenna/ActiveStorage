@@ -4,8 +4,9 @@
 using System.IO;
 using FluentMigrator.Runner;
 using Microsoft.Data.Sqlite;
+using MigrationRunner = ActiveStorage.Sql.MigrationRunner;
 
-namespace ActiveStorage.Tests.Internal
+namespace ActiveStorage.Sqlite
 {
 	internal sealed class SqliteMigrationRunner : MigrationRunner
 	{

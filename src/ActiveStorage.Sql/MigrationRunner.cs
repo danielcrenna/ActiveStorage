@@ -6,9 +6,9 @@ using FluentMigrator.Runner;
 using FluentMigrator.Runner.Initialization;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ActiveStorage.Tests.Internal
+namespace ActiveStorage.Sql
 {
-	internal abstract class MigrationRunner
+	public abstract class MigrationRunner
 	{
 		protected readonly string ConnectionString;
 

@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentMigrator.Runner" Version="3.2.1" />
+   
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
   </ItemGroup>
 
@@ -16,6 +16,7 @@
     <ProjectReference Include="..\..\src\ActiveStorage.Azure.TableStorage\ActiveStorage.Azure.TableStorage.csproj" />
     <ProjectReference Include="..\..\src\ActiveStorage.Sqlite\ActiveStorage.Sqlite.csproj" />
     <ProjectReference Include="..\..\src\ActiveStorage.SqlServer\ActiveStorage.SqlServer.csproj" />
+    <ProjectReference Include="..\..\src\ActiveStorage.Sql\ActiveStorage.Sql.csproj" />
   </ItemGroup>
 
 </Project>

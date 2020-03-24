@@ -5,7 +5,6 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using ActiveStorage.Sqlite;
-using ActiveStorage.Tests.Internal;
 using Microsoft.Data.Sqlite;
 
 namespace ActiveStorage.Tests.Fixtures
