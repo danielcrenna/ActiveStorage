@@ -11,7 +11,7 @@
     <RepositoryUrl>https://github.com/danielcrenna/ActiveStorage</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>repository store database persistence</PackageTags>
-    <Version>1.0.0-pre-3</Version>
+    <Version>1.0.0-pre-4</Version>
     <PackageReleaseNotes>Initial implementation.</PackageReleaseNotes>
   </PropertyGroup>
 
