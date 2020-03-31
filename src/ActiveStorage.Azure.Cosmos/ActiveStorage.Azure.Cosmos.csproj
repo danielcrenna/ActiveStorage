@@ -9,8 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ActiveErrors" Version="1.0.5" />
     <PackageReference Include="ActiveLogging" Version="1.0.3" />
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ActiveStorage\ActiveStorage.csproj" />
   </ItemGroup>
 
 </Project>
