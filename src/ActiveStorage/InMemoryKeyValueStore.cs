@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Daniel Crenna & Contributors. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace ActiveStorage
 {
-	public sealed class InMemoryKeyValueStore<TKey, TValue> : IKeyValueStore<TKey, TValue>
+	public sealed class InMemoryKeyValueStore<TKey, TValue> : IKeyValueStore<TKey, TValue>, IEnumerable<KeyValuePair<TKey, TValue>>, IClearableStore
 	{
 		private readonly ConcurrentDictionary<TKey, TValue> _memory;
 
@@ -37,6 +39,16 @@ namespace ActiveStorage
 		{
 			_memory.Clear();
 			return true;
+		}
+
+		public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+		{
+			return _memory.GetEnumerator();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return ((IEnumerable) _memory).GetEnumerator();
 		}
 	}
 }
