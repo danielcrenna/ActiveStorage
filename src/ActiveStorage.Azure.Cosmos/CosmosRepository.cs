@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using ActiveLogging;
 using ActiveStorage.Azure.Cosmos.Configuration;
 using ActiveStorage.Azure.Cosmos.Internal;
+using ActiveStorage.DataAnnotations;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Extensions.Options;
@@ -20,27 +21,24 @@ using TypeKitchen;
 
 namespace ActiveStorage.Azure.Cosmos
 {
-	public class CosmosRepository<T> : ICosmosRepository<T> where T : IDocumentEntity
+	public class CosmosRepository : ICosmosRepository
 	{
 		private readonly Container _container;
 
-		private readonly ISafeLogger<CosmosRepository<T>> _logger;
+		private readonly ISafeLogger<CosmosRepository> _logger;
 		private readonly IOptionsMonitor<CosmosStorageOptions> _options;
-		private readonly ITypeReadAccessor _reads;
 		private readonly string _slot;
 
 		public CosmosRepository(string slot, Container container, IOptionsMonitor<CosmosStorageOptions> options,
-			ISafeLogger<CosmosRepository<T>> logger)
+			ISafeLogger<CosmosRepository> logger)
 		{
 			_slot = slot;
 			_container = container;
 			_options = options;
 			_logger = logger;
-
-			_reads = ReadAccessor.Create(typeof(T));
 		}
 
-		public async Task<T> CreateAsync(T item, CancellationToken cancellationToken = default)
+		public async Task<T> CreateAsync<T>(T item, CancellationToken cancellationToken = default) where T : IDocumentEntity
 		{
 			cancellationToken.ThrowIfCancellationRequested();
 
@@ -53,7 +51,7 @@ namespace ActiveStorage.Azure.Cosmos
 			return document.Resource;
 		}
 
-		public async Task<T> RetrieveAsync(string id, CancellationToken cancellationToken = default)
+		public async Task<T> RetrieveAsync<T>(string id, CancellationToken cancellationToken = default) where T : IDocumentEntity
 		{
 			cancellationToken.ThrowIfCancellationRequested();
 
@@ -74,38 +72,38 @@ namespace ActiveStorage.Azure.Cosmos
 			}
 		}
 
-		public Task<long> CountAsync(Expression<Func<T, bool>> predicate = null,
-			CancellationToken cancellationToken = default)
+		public Task<long> CountAsync<T>(Expression<Func<T, bool>> predicate = null,
+			CancellationToken cancellationToken = default) where T : IDocumentEntity
 		{
 			cancellationToken.ThrowIfCancellationRequested();
 
-			var queryable = CreateDocumentQuery();
+			var queryable = CreateDocumentQuery<T>();
 			var query = predicate != null ? queryable.Where(predicate).Count() : queryable.Count();
 			return Task.FromResult((long) query);
 		}
 
-		public async Task<IEnumerable<T>> RetrieveAsync(Func<IQueryable<T>, IQueryable<T>> projection,
-			CancellationToken cancellationToken = default)
+		public async Task<IEnumerable<T>> RetrieveAsync<T>(Func<IQueryable<T>, IQueryable<T>> projection,
+			CancellationToken cancellationToken = default) where T : IDocumentEntity
 		{
 			cancellationToken.ThrowIfCancellationRequested();
 
-			var queryable = projection(CreateDocumentQuery());
+			var queryable = projection(CreateDocumentQuery<T>());
 			var result = await GetResultsAsync(queryable, cancellationToken);
 			return result;
 		}
 
-		public async Task<IEnumerable<T>> RetrieveAsync(Expression<Func<T, bool>> predicate = null,
-			CancellationToken cancellationToken = default)
+		public async Task<IEnumerable<T>> RetrieveAsync<T>(Expression<Func<T, bool>> predicate = null,
+			CancellationToken cancellationToken = default) where T : IDocumentEntity
 		{
 			cancellationToken.ThrowIfCancellationRequested();
 
-			var queryable = CreateDocumentQuery();
+			var queryable = CreateDocumentQuery<T>();
 			var query = predicate != null ? queryable.Where(predicate) : queryable;
 			return await GetResultsAsync(query, cancellationToken);
 		}
 
-		public async Task<T> RetrieveSingleAsync(Expression<Func<T, bool>> predicate = null,
-			CancellationToken cancellationToken = default)
+		public async Task<T> RetrieveSingleAsync<T>(Expression<Func<T, bool>> predicate = null,
+			CancellationToken cancellationToken = default) where T : IDocumentEntity
 		{
 			cancellationToken.ThrowIfCancellationRequested();
 
@@ -113,8 +111,8 @@ namespace ActiveStorage.Azure.Cosmos
 			return results.Single();
 		}
 
-		public async Task<T> RetrieveSingleOrDefaultAsync(Expression<Func<T, bool>> predicate = null,
-			CancellationToken cancellationToken = default)
+		public async Task<T> RetrieveSingleOrDefaultAsync<T>(Expression<Func<T, bool>> predicate = null,
+			CancellationToken cancellationToken = default) where T : IDocumentEntity
 		{
 			cancellationToken.ThrowIfCancellationRequested();
 
@@ -123,8 +121,8 @@ namespace ActiveStorage.Azure.Cosmos
 			return results.SingleOrDefault();
 		}
 
-		public async Task<T> RetrieveFirstAsync(Expression<Func<T, bool>> predicate = null,
-			CancellationToken cancellationToken = default)
+		public async Task<T> RetrieveFirstAsync<T>(Expression<Func<T, bool>> predicate = null,
+			CancellationToken cancellationToken = default) where T : IDocumentEntity
 		{
 			cancellationToken.ThrowIfCancellationRequested();
 
@@ -133,15 +131,15 @@ namespace ActiveStorage.Azure.Cosmos
 			return results.First();
 		}
 
-		public async Task<T> RetrieveFirstOrDefaultAsync(Expression<Func<T, bool>> predicate = null,
-			CancellationToken cancellationToken = default)
+		public async Task<T> RetrieveFirstOrDefaultAsync<T>(Expression<Func<T, bool>> predicate = null,
+			CancellationToken cancellationToken = default) where T : IDocumentEntity
 		{
 			var results = await RetrieveAsync(predicate, cancellationToken);
 
 			return results.FirstOrDefault();
 		}
 
-		public async Task<T> UpdateAsync(string id, T item, CancellationToken cancellationToken = default)
+		public async Task<T> UpdateAsync<T>(string id, T item, CancellationToken cancellationToken = default) where T : IDocumentEntity
 		{
 			cancellationToken.ThrowIfCancellationRequested();
 
@@ -151,7 +149,7 @@ namespace ActiveStorage.Azure.Cosmos
 			return await _container.ReplaceItemAsync(item, id, partitionKey, options, cancellationToken);
 		}
 
-		public async Task<T> UpsertAsync(T item, CancellationToken cancellationToken = default)
+		public async Task<T> UpsertAsync<T>(T item, CancellationToken cancellationToken = default) where T : IDocumentEntity
 		{
 			cancellationToken.ThrowIfCancellationRequested();
 
@@ -173,7 +171,7 @@ namespace ActiveStorage.Azure.Cosmos
 			}
 		}
 
-		public async Task<bool> DeleteAsync(string id, CancellationToken cancellationToken = default)
+		public async Task<bool> DeleteAsync<T>(string id, CancellationToken cancellationToken = default) where T : IDocumentEntity
 		{
 			cancellationToken.ThrowIfCancellationRequested();
 
@@ -184,7 +182,7 @@ namespace ActiveStorage.Azure.Cosmos
 			return response.StatusCode == HttpStatusCode.NoContent;
 		}
 
-		public async Task<bool> DeleteAsync(IEnumerable<string> ids, CancellationToken cancellationToken = default)
+		public async Task<bool> DeleteAsync<T>(IEnumerable<string> ids, CancellationToken cancellationToken = default) where T : IDocumentEntity
 		{
 			cancellationToken.ThrowIfCancellationRequested();
 
@@ -212,12 +210,12 @@ namespace ActiveStorage.Azure.Cosmos
 			return deleted == total;
 		}
 
-		private async Task BeforeSaveAsync(T item, CancellationToken cancellationToken)
+		private async Task BeforeSaveAsync<T>(T item, CancellationToken cancellationToken) where T : IDocumentEntity
 		{
 			await ValidateUniqueFields(item, cancellationToken);
 		}
 
-		private async Task ValidateUniqueFields(T item, CancellationToken cancellationToken)
+		private async Task ValidateUniqueFields<T>(T item, CancellationToken cancellationToken) where T : IDocumentEntity
 		{
 			IQueryable<T> queryable = null;
 			foreach (var member in AccessorMembers.Create(typeof(T)))
@@ -227,9 +225,9 @@ namespace ActiveStorage.Azure.Cosmos
 					continue;
 				}
 
-				queryable ??= CreateDocumentQuery();
+				queryable ??= CreateDocumentQuery<T>();
 				queryable = queryable.Where(ComputedPredicate<T>.AsExpression(member.Name, ExpressionOperator.Equal,
-					_reads[item, member.Name]));
+					ReadAccessor.Create(item)[item, member.Name]));
 			}
 
 			if (queryable == null)
@@ -244,7 +242,7 @@ namespace ActiveStorage.Azure.Cosmos
 			}
 		}
 
-		private IQueryable<T> CreateDocumentQuery()
+		private IQueryable<T> CreateDocumentQuery<T>() where T : IDocumentEntity
 		{
 			var allowSynchronousExecution = false;
 			var options = new QueryRequestOptions();
@@ -263,7 +261,7 @@ namespace ActiveStorage.Azure.Cosmos
 			return queryable;
 		}
 
-		private static async Task<IList<T>> GetResultsAsync(IQueryable<T> query, CancellationToken cancellationToken)
+		private static async Task<IList<T>> GetResultsAsync<T>(IQueryable<T> query, CancellationToken cancellationToken)
 		{
 			try
 			{

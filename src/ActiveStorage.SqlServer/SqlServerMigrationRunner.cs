@@ -29,10 +29,7 @@ namespace ActiveStorage.SqlServer
 			Debug.Assert(File.Exists(fileName));
 		}
 
-		public static string DatabaseFileName(string databaseName)
-		{
-			return Path.Combine(EnsureOutputDir(), $"{databaseName}.mdb");
-		}
+		public static string DatabaseFileName(string databaseName) => Path.Combine(EnsureOutputDir(), $"{databaseName}.mdb");
 
 		public static string EnsureOutputDir()
 		{
@@ -43,9 +40,6 @@ namespace ActiveStorage.SqlServer
 			return outputDir;
 		}
 
-		public override void ConfigureMigrator(IMigrationRunnerBuilder builder)
-		{
-			builder.AddSqlServer();
-		}
+		public override void ConfigureMigrator(IMigrationRunnerBuilder builder) => builder.AddSqlServer();
 	}
 }

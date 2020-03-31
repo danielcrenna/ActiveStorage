@@ -9,7 +9,7 @@ namespace ActiveStorage
 {
 	public interface IObjectCreateStore
 	{
-		Task<Operation<ObjectSave>> CreateAsync(object @object, CancellationToken cancellationToken = default,
+		Task<Operation<ObjectCreate>> CreateAsync(object @object, CancellationToken cancellationToken = default,
 			params string[] fields);
 	}
 }

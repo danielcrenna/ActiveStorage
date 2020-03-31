@@ -25,7 +25,7 @@ namespace ActiveStorage.Azure.Cosmos
 			AccountEndpoint = options.AccountEndpoint;
 			AccountKey = options.AccountKey;
 			Database = options.DatabaseId;
-			DefaultCollection = options.ContainerId;
+			DefaultContainer = options.ContainerId;
 			SharedCollection = options.SharedCollection;
 			PartitionKeyPaths = options.PartitionKeyPaths;
 		}
@@ -59,7 +59,7 @@ namespace ActiveStorage.Azure.Cosmos
 			}
 		}
 
-		public string DefaultCollection
+		public string DefaultContainer
 		{
 			get => this[Constants.DefaultCollectionKey] as string;
 			set
@@ -71,14 +71,14 @@ namespace ActiveStorage.Azure.Cosmos
 
 		public string CollectionId
 		{
-			get => DefaultCollection;
-			set => DefaultCollection = value;
+			get => DefaultContainer;
+			set => DefaultContainer = value;
 		}
 
 		public string ContainerId
 		{
-			get => DefaultCollection;
-			set => DefaultCollection = value;
+			get => DefaultContainer;
+			set => DefaultContainer = value;
 		}
 
 		public string[] PartitionKeyPaths
@@ -125,7 +125,7 @@ namespace ActiveStorage.Azure.Cosmos
 		{
 			options.AccountEndpoint = AccountEndpoint;
 			options.AccountKey = AccountKey;
-			options.ContainerId = DefaultCollection;
+			options.ContainerId = DefaultContainer;
 			options.DatabaseId = Database;
 			options.SharedCollection = SharedCollection;
 			options.PartitionKeyPaths = PartitionKeyPaths;

@@ -24,12 +24,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActiveStorage.Azure.TableSt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActiveStorage.Azure.Cosmos", "src\ActiveStorage.Azure.Cosmos\ActiveStorage.Azure.Cosmos.csproj", "{3EE8071F-DCB2-451E-A88A-E80E2816DB6F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestKitchen", "..\TestKitchen\src\TestKitchen\TestKitchen.csproj", "{FA0E5D54-737A-4944-82D6-6F6CE54EC18E}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestKitchen.TestAdapter", "..\TestKitchen\src\TestKitchen.TestAdapter\TestKitchen.TestAdapter.csproj", "{2549F7CB-CA84-4313-9C00-214E2E1E318C}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deps", "deps", "{4360B6C5-F1CD-4054-ADE8-8E4B7B63108D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActiveStorage.Sql", "src\ActiveStorage.Sql\ActiveStorage.Sql.csproj", "{933948E9-EB9C-47C6-BB12-8A1F3322EB29}"
 EndProject
 Global
@@ -75,18 +69,6 @@ Global
 		{3EE8071F-DCB2-451E-A88A-E80E2816DB6F}.Package|Any CPU.Build.0 = Package|Any CPU
 		{3EE8071F-DCB2-451E-A88A-E80E2816DB6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EE8071F-DCB2-451E-A88A-E80E2816DB6F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FA0E5D54-737A-4944-82D6-6F6CE54EC18E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FA0E5D54-737A-4944-82D6-6F6CE54EC18E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FA0E5D54-737A-4944-82D6-6F6CE54EC18E}.Package|Any CPU.ActiveCfg = Release|Any CPU
-		{FA0E5D54-737A-4944-82D6-6F6CE54EC18E}.Package|Any CPU.Build.0 = Release|Any CPU
-		{FA0E5D54-737A-4944-82D6-6F6CE54EC18E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FA0E5D54-737A-4944-82D6-6F6CE54EC18E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2549F7CB-CA84-4313-9C00-214E2E1E318C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2549F7CB-CA84-4313-9C00-214E2E1E318C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2549F7CB-CA84-4313-9C00-214E2E1E318C}.Package|Any CPU.ActiveCfg = Release|Any CPU
-		{2549F7CB-CA84-4313-9C00-214E2E1E318C}.Package|Any CPU.Build.0 = Release|Any CPU
-		{2549F7CB-CA84-4313-9C00-214E2E1E318C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2549F7CB-CA84-4313-9C00-214E2E1E318C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{933948E9-EB9C-47C6-BB12-8A1F3322EB29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{933948E9-EB9C-47C6-BB12-8A1F3322EB29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{933948E9-EB9C-47C6-BB12-8A1F3322EB29}.Package|Any CPU.ActiveCfg = Release|Any CPU
@@ -96,10 +78,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{FA0E5D54-737A-4944-82D6-6F6CE54EC18E} = {4360B6C5-F1CD-4054-ADE8-8E4B7B63108D}
-		{2549F7CB-CA84-4313-9C00-214E2E1E318C} = {4360B6C5-F1CD-4054-ADE8-8E4B7B63108D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D3E6AB14-854B-4F3B-BDB6-844A598A9892}

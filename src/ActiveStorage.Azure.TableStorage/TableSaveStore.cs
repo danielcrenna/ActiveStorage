@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using ActiveErrors;
 using Microsoft.Extensions.Logging;
@@ -20,7 +21,7 @@ namespace ActiveStorage.Azure.TableStorage
 			_logger = logger;
 		}
 
-		public async Task<Operation<ObjectSave>> SaveAsync(object @object, params string[] fields)
+		public async Task<Operation<ObjectSave>> SaveAsync(object @object, CancellationToken cancellationToken = default, params string[] fields)
 		{
 			var entity = new FastTableEntity(@object, "TODO", "TODO", _logger);
 			return await InsertAsync(entity);

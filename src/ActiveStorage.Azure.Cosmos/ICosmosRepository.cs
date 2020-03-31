@@ -10,36 +10,25 @@ using System.Threading.Tasks;
 
 namespace ActiveStorage.Azure.Cosmos
 {
-	public interface ICosmosRepository<T> where T : IDocumentEntity
+	public interface ICosmosRepository
 	{
-		Task<long> CountAsync(Expression<Func<T, bool>> predicate = null,
-			CancellationToken cancellationToken = default);
+		Task<long> CountAsync<T>(Expression<Func<T, bool>> predicate = null, CancellationToken cancellationToken = default) where T : IDocumentEntity;
+		Task<IEnumerable<T>> RetrieveAsync<T>(Expression<Func<T, bool>> predicate = null, CancellationToken cancellationToken = default) where T : IDocumentEntity;
 
-		Task<IEnumerable<T>> RetrieveAsync(Expression<Func<T, bool>> predicate = null,
-			CancellationToken cancellationToken = default);
+		Task<T> RetrieveAsync<T>(string id, CancellationToken cancellationToken = default) where T : IDocumentEntity;
+		Task<IEnumerable<T>> RetrieveAsync<T>(Func<IQueryable<T>, IQueryable<T>> projection, CancellationToken cancellationToken = default) where T : IDocumentEntity;
 
-		Task<T> RetrieveAsync(string id, CancellationToken cancellationToken = default);
+		Task<T> RetrieveSingleAsync<T>(Expression<Func<T, bool>> predicate = null, CancellationToken cancellationToken = default)  where T : IDocumentEntity;
 
-		Task<IEnumerable<T>> RetrieveAsync(Func<IQueryable<T>, IQueryable<T>> projection,
-			CancellationToken cancellationToken = default);
+		Task<T> RetrieveSingleOrDefaultAsync<T>(Expression<Func<T, bool>> predicate = null, CancellationToken cancellationToken = default) where T : IDocumentEntity;
+		Task<T> RetrieveFirstAsync<T>(Expression<Func<T, bool>> predicate = null, CancellationToken cancellationToken = default) where T : IDocumentEntity;
+		Task<T> RetrieveFirstOrDefaultAsync<T>(Expression<Func<T, bool>> predicate = null, CancellationToken cancellationToken = default) where T : IDocumentEntity;
 
-		Task<T> RetrieveSingleAsync(Expression<Func<T, bool>> predicate = null,
-			CancellationToken cancellationToken = default);
+		Task<T> CreateAsync<T>(T item, CancellationToken cancellationToken = default) where T : IDocumentEntity;
+		Task<T> UpdateAsync<T>(string id, T item, CancellationToken cancellationToken = default)  where T : IDocumentEntity;
+		Task<T> UpsertAsync<T>(T item, CancellationToken cancellationToken = default)  where T : IDocumentEntity;
 
-		Task<T> RetrieveSingleOrDefaultAsync(Expression<Func<T, bool>> predicate = null,
-			CancellationToken cancellationToken = default);
-
-		Task<T> RetrieveFirstAsync(Expression<Func<T, bool>> predicate = null,
-			CancellationToken cancellationToken = default);
-
-		Task<T> RetrieveFirstOrDefaultAsync(Expression<Func<T, bool>> predicate = null,
-			CancellationToken cancellationToken = default);
-
-		Task<T> CreateAsync(T item, CancellationToken cancellationToken = default);
-		Task<T> UpdateAsync(string id, T item, CancellationToken cancellationToken = default);
-		Task<T> UpsertAsync(T item, CancellationToken cancellationToken = default);
-
-		Task<bool> DeleteAsync(string id, CancellationToken cancellationToken = default);
-		Task<bool> DeleteAsync(IEnumerable<string> ids, CancellationToken cancellationToken = default);
+		Task<bool> DeleteAsync<T>(string id, CancellationToken cancellationToken = default) where T : IDocumentEntity;
+		Task<bool> DeleteAsync<T>(IEnumerable<string> ids, CancellationToken cancellationToken = default) where T : IDocumentEntity;
 	}
 }

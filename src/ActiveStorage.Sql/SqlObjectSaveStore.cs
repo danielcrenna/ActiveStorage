@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using ActiveErrors;
 using ActiveStorage.Sql.Builders;
@@ -28,7 +29,7 @@ namespace ActiveStorage.Sql
 			_provider = provider;
 		}
 
-		public async Task<Operation<ObjectSave>> SaveAsync(object @object, params string[] fields)
+		public async Task<Operation<ObjectSave>> SaveAsync(object @object, CancellationToken cancellationToken = default, params string[] fields)
 		{
 			var accessor = ReadAccessor.Create(@object, AccessorMemberTypes.Properties, AccessorMemberScope.Public,
 				out var members);
@@ -75,8 +76,7 @@ namespace ActiveStorage.Sql
 				}
 
 				var sql = _dialect.InsertInto(members, columns, false);
-				var parameters = columns.ToDictionary(k => $"{_dialect.Parameter}{_dialect.ResolveColumnName(k)}",
-					v => hash[v.Name]);
+				var parameters = columns.ToDictionary(k => $"{_dialect.Parameter}{_dialect.ResolveColumnName(k)}", v => hash[v.Name]);
 				var inserted = await _dialect.ExecuteAsync(_connectionString, sql, parameters);
 
 				Debug.Assert(inserted == 1);

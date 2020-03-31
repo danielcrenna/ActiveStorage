@@ -3,7 +3,7 @@
 
 using System;
 
-namespace ActiveStorage.Azure.Cosmos
+namespace ActiveStorage.DataAnnotations
 {
 	public class UniqueAttribute : Attribute
 	{
