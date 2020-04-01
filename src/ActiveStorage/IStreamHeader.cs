@@ -10,10 +10,10 @@ namespace ActiveStorage
 		int Count { get; }
 
 		long TotalCount { get; }
-		bool HasPreviousPage { get; }
-		bool HasNextPage { get; }
+		bool HasPreviousResults { get; }
+		bool HasMoreResults { get; }
 
-		string BeforePage { get; }
-		string AfterPage { get; }
+		string Before { get; }
+		string After { get; }
 	}
 }

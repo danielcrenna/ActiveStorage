@@ -12,7 +12,7 @@ using ActiveStorage.Tests.Models;
 
 namespace ActiveStorage.Tests.ObjectSaveStore
 {
-	public class SqliteObjectSaveStoreTests : ISaveStoreTests
+	public class SqliteSaveStoreTests : ISaveStoreTests
 	{
 		public async Task<bool> Empty_database_has_no_objects()
 		{

@@ -39,24 +39,44 @@ namespace ActiveStorage.Sqlite
 		public async Task<IEnumerable<T>> QueryAsync<T>(string connectionString, string sql,
 			Dictionary<string, object> parameters)
 		{
-			await using var db = new SqliteConnection(connectionString);
-			var result = await db.QueryAsync<T>(sql, parameters);
-			return result;
+			try
+			{
+				await using var db = new SqliteConnection(connectionString);
+				var result = await db.QueryAsync<T>(sql, parameters);
+				return result;
+			}
+			catch (SqliteException e)
+			{
+				throw new StorageException("Error querying SQLite", e);
+			}
 		}
 
-		public async Task<T> QuerySingleAsync<T>(string connectionString, string sql,
-			Dictionary<string, object> parameters)
+		public async Task<T> QuerySingleAsync<T>(string connectionString, string sql, Dictionary<string, object> parameters)
 		{
-			await using var db = new SqliteConnection(connectionString);
-			var result = await db.QuerySingleAsync<T>(sql, parameters);
-			return result;
+			try
+			{
+				await using var db = new SqliteConnection(connectionString);
+				var result = await db.QuerySingleAsync<T>(sql, parameters);
+				return result;
+			}
+			catch (SqliteException e)
+			{
+				throw new StorageException("Error querying SQLite", e);
+			}
 		}
 
 		public async Task<int> ExecuteAsync(string connectionString, string sql, Dictionary<string, object> parameters)
 		{
-			await using var db = new SqliteConnection(connectionString);
-			var result = await db.ExecuteAsync(sql, parameters);
-			return result;
+			try
+			{
+				await using var db = new SqliteConnection(connectionString);
+				var result = await db.ExecuteAsync(sql, parameters);
+				return result;
+			}
+			catch (SqliteException e)
+			{
+				throw new StorageException("Error executing SQLite", e);
+			}
 		}
 	}
 }

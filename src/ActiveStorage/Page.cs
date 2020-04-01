@@ -3,10 +3,30 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace ActiveStorage
 {
+	[DataContract]
+	public class Page<T> : Page, IPage<T>
+	{
+		private readonly IEnumerable<T> _source;
+
+		public Page(IEnumerable<T> source, int count, int index, int size, long totalCount) : base(source, count, index,
+			size, totalCount) => _source = source;
+
+		public new IEnumerator<T> GetEnumerator()
+		{
+			return _source.GetEnumerator();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
+	}
+
 	[DataContract]
 	public class Page : IPage
 	{
