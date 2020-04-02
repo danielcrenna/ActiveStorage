@@ -3,8 +3,10 @@
 
 using System;
 using System.Data;
+using ActiveLogging;
 using ActiveStorage.Internal;
 using ActiveStorage.Sql;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace ActiveStorage.Tests.Fixtures
 {
@@ -73,9 +75,9 @@ namespace ActiveStorage.Tests.Fixtures
 
 		public IObjectSaveStore GetSaveStore()
 		{
-			return new SqlObjectSaveStore(ConnectionString, _dialect,
-				new AttributeDataInfoProvider(),
-				new CreatedAtTransform(() => DateTimeOffset.UtcNow));
+			var logger = new SafeLogger<SqlObjectSaveStore>(new NullLogger<SqlObjectSaveStore>());
+			var transform = new CreatedAtTransform(() => DateTimeOffset.UtcNow);
+			return new SqlObjectSaveStore(ConnectionString, _dialect, new AttributeDataInfoProvider(), logger, transform);
 		}
 
 		protected virtual void Dispose(bool disposing)

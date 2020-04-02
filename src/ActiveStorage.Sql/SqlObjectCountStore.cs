@@ -6,13 +6,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using ActiveErrors;
 using ActiveStorage.Sql.Builders;
-using Microsoft.Extensions.DependencyInjection;
 using TypeKitchen;
 
 namespace ActiveStorage.Sql
 {
-	
-
 	public sealed class SqlObjectCountStore : IObjectCountStore
 	{
 		private readonly string _connectionString;
@@ -34,9 +31,6 @@ namespace ActiveStorage.Sql
 			return new Operation<ulong> {Data = count};
 		}
 
-		public Task<Operation<ulong>> CountAsync<T>(CancellationToken cancellationToken = default)
-		{
-			return CountAsync(typeof(T), cancellationToken);
-		}
+		public Task<Operation<ulong>> CountAsync<T>(CancellationToken cancellationToken = default) => CountAsync(typeof(T), cancellationToken);
 	}
 }

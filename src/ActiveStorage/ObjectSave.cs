@@ -11,6 +11,7 @@ namespace ActiveStorage
 		[EnumMember] NotFound,
 		[EnumMember] NoChanges,
 		[EnumMember] Created,
-		[EnumMember] Updated
+		[EnumMember] Updated,
+		[EnumMember] Error
 	}
 }
