@@ -34,20 +34,25 @@ namespace ActiveStorage.Tests.ObjectCreateStore
 			using var db = new SqliteFixture<AddSimpleObject>();
 			db.Open();
 
-			var transform = new CreatedAtTransform(() => DateTimeOffset.UtcNow);
-			var logger = new SafeLogger<SqlObjectCreateStore>(new NullLogger<SqlObjectCreateStore>());
-			var store = new SqlObjectCreateStore(db.ConnectionString, new SqliteDialect(), new AttributeDataInfoProvider(), logger, transform);
-			
-			var result = await store.CreateAsync(new SimpleObject {Id = 1});
+			var store = db.GetCreateStore();
+
+			var instance = new SimpleObject {Id = 1};
+
+			var result = await store.CreateAsync(instance);
 			if (!result.Succeeded)
 				return false;
 
-			var counter = db.GetCountStore();
-			var count = await counter.CountAsync(typeof(SimpleObject));
-			if (!count.Succeeded)
+			var countStore = db.GetCountStore();
+			var count = await countStore.CountAsync(typeof(SimpleObject));
+			if (!count.Succeeded || count.Data != 1)
 				return false;
 
-			return count.Data == 1;
+			var queryStore = db.GetSingleObjectQueryByExampleStore();
+			var fetched = await queryStore.QueryFirstOrDefaultByExampleAsync<SimpleObject>(new { Id = 1});
+			if (fetched == null)
+				return false;
+
+			return true;
 		}
 
 		public async Task<bool> Cannot_create_same_object_twice()
@@ -55,12 +60,9 @@ namespace ActiveStorage.Tests.ObjectCreateStore
 			using var db = new SqliteFixture<AddSimpleObject>();
 			db.Open();
 
-			var transform = new CreatedAtTransform(() => DateTimeOffset.UtcNow);
-			var logger = new SafeLogger<SqlObjectCreateStore>(new NullLogger<SqlObjectCreateStore>());
-			var store = new SqlObjectCreateStore(db.ConnectionString, new SqliteDialect(), new AttributeDataInfoProvider(), logger, transform);
-			
 			var instance = new SimpleObject {Id = 1};
 
+			var store = db.GetCreateStore();
 			var result = await store.CreateAsync(instance);
 			if (!result.Succeeded)
 				return false;

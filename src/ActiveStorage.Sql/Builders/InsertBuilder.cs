@@ -8,53 +8,31 @@ namespace ActiveStorage.Sql.Builders
 {
 	internal static class InsertBuilder
 	{
-		public static string InsertInto(this ISqlDialect d, AccessorMembers members, IList<AccessorMember> include,
-			bool returnKeys)
+		public static string InsertInto(this ISqlDialect d, AccessorMembers members, IEnumerable<AccessorMember> columns, int columnCount, bool returnKeys)
 		{
 			return Pooling.StringBuilderPool.Scoped(sb =>
 			{
 				sb.Append("INSERT INTO ");
-
-				var tableName = d.ResolveTableName(members);
-				var schemaName = d.ResolveSchemaName(members);
-
-				sb.AppendTable(d, tableName, schemaName).Append(" (");
-
-				for (var i = 0; i < include.Count; i++)
-				{
-					var columnName = members.TryGetValue(include[i].Name, out var member)
-						? d.ResolveColumnName(member)
-						: include[i].Name;
-
-					sb.AppendName(d, columnName);
-					if (i < include.Count - 1)
-						sb.Append(", ");
-				}
-
-				sb.Append(") ");
+				
+				sb.AppendTable(d, members).Append(" (")
+					// ReSharper disable once PossibleMultipleEnumeration
+					.AppendColumnNames(d, columns, columnCount)
+					.Append(") ");
 
 				if (returnKeys &&
 				    d.TryFetchInsertedKey(FetchInsertedKeyLocation.BeforeValues, out var fetchBeforeValues))
 					sb.Append(fetchBeforeValues).Append(" ");
 
-				sb.Append("VALUES (");
+				sb.Append("VALUES (")
+					// ReSharper disable once PossibleMultipleEnumeration
+					.AppendColumnNames(d, columns, columnCount)
+					.Append(") ");
 
-				for (var i = 0; i < include.Count; i++)
+				if (returnKeys && d.TryFetchInsertedKey(FetchInsertedKeyLocation.AfterStatement, out var fetchAfterStatement))
 				{
-					var columnName = members.TryGetValue(include[i].Name, out var member)
-						? d.ResolveColumnName(member)
-						: include[i].Name;
-
-					sb.AppendParameter(d, columnName);
-					if (i < include.Count - 1)
-						sb.Append(",");
+					sb.Append("; ");
+					sb.Append(fetchAfterStatement);
 				}
-
-				sb.Append(")");
-
-				if (returnKeys &&
-				    d.TryFetchInsertedKey(FetchInsertedKeyLocation.AfterStatement, out var fetchAfterStatement))
-					sb.Append("; ").Append(fetchAfterStatement);
 			});
 		}
 	}

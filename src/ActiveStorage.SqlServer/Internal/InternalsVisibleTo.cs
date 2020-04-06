@@ -7,7 +7,6 @@ using System.Runtime.CompilerServices;
 
 namespace ActiveStorage.SqlServer.Internal
 {
-	internal sealed class InternalsVisibleTo
-	{
-	}
+	// ReSharper disable once UnusedMember.Global
+	internal sealed class InternalsVisibleTo { }
 }

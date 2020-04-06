@@ -9,5 +9,6 @@ namespace ActiveStorage.Tests.Fixtures
 	{
 		IObjectCountStore GetCountStore();
 		IObjectSaveStore GetSaveStore();
+		ISingleObjectQueryByExampleStore GetSingleObjectQueryByExampleStore();
 	}
 }

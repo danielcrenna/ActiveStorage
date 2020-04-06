@@ -70,14 +70,28 @@ namespace ActiveStorage.Tests.Fixtures
 
 		public IObjectCountStore GetCountStore()
 		{
-			return new SqlObjectCountStore(ConnectionString, _dialect);
+			return new SqlObjectCountStore(ConnectionString, _dialect, new SafeLogger<SqlObjectCountStore>(new NullLogger<SqlObjectCountStore>()));
+		}
+
+		public ISingleObjectQueryByExampleStore GetSingleObjectQueryByExampleStore()
+		{
+			return new SqlSingleObjectQueryByExampleStore(ConnectionString, _dialect, new SafeLogger<SqlSingleObjectQueryByExampleStore>(new NullLogger<SqlSingleObjectQueryByExampleStore>()));
 		}
 
 		public IObjectSaveStore GetSaveStore()
 		{
 			var logger = new SafeLogger<SqlObjectSaveStore>(new NullLogger<SqlObjectSaveStore>());
 			var transform = new CreatedAtTransform(() => DateTimeOffset.UtcNow);
-			return new SqlObjectSaveStore(ConnectionString, _dialect, new AttributeDataInfoProvider(), logger, transform);
+			var store = new SqlObjectSaveStore(ConnectionString, _dialect, new AttributeDataInfoProvider(), logger, transform);
+			return store;
+		}
+
+		public IObjectCreateStore GetCreateStore()
+		{
+			var transform = new CreatedAtTransform(() => DateTimeOffset.UtcNow);
+			var logger = new SafeLogger<SqlObjectCreateStore>(new NullLogger<SqlObjectCreateStore>());
+			var store = new SqlObjectCreateStore(ConnectionString, _dialect, new AttributeDataInfoProvider(), logger, transform);
+			return store;
 		}
 
 		protected virtual void Dispose(bool disposing)

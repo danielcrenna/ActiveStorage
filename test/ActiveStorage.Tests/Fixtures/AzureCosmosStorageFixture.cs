@@ -10,11 +10,11 @@ using Microsoft.WindowsAzure.Storage.Table;
 
 namespace ActiveStorage.Tests.Fixtures
 {
-	public sealed class AzureTableStorageFixture : IStoreFixture
+	public sealed class AzureCosmosStorageFixture : IStoreFixture
 	{
 		private readonly CloudTable _table;
 
-		public AzureTableStorageFixture()
+		public AzureCosmosStorageFixture()
 		{
 			var tableName = $"T{Guid.NewGuid().ToString("N").ToUpperInvariant()}";
 

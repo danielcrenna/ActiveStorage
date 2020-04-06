@@ -3,6 +3,7 @@
 
 using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("ActiveStorage.Sql")]
 [assembly: InternalsVisibleTo("ActiveStorage.Sqlite")]
 [assembly: InternalsVisibleTo("ActiveStorage.Tests")]
 

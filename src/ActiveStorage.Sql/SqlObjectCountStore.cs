@@ -5,7 +5,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using ActiveErrors;
-using ActiveStorage.Sql.Builders;
+using ActiveLogging;
+using ActiveStorage.Sql.Internal;
 using TypeKitchen;
 
 namespace ActiveStorage.Sql
@@ -14,11 +15,13 @@ namespace ActiveStorage.Sql
 	{
 		private readonly string _connectionString;
 		private readonly ISqlDialect _dialect;
+		private readonly ISafeLogger<SqlObjectCountStore> _logger;
 
-		public SqlObjectCountStore(string connectionString, ISqlDialect dialect)
+		public SqlObjectCountStore(string connectionString, ISqlDialect dialect, ISafeLogger<SqlObjectCountStore> logger)
 		{
 			_connectionString = connectionString;
 			_dialect = dialect;
+			_logger = logger;
 		}
 
 		public async Task<Operation<ulong>> CountAsync(Type type, CancellationToken cancellationToken = default)
@@ -26,9 +29,7 @@ namespace ActiveStorage.Sql
 			cancellationToken.ThrowIfCancellationRequested();
 
 			var members = AccessorMembers.Create(type, AccessorMemberTypes.Properties, AccessorMemberScope.Public);
-			var sql = _dialect.Count(members);
-			var count = await _dialect.QuerySingleAsync<ulong>(_connectionString, sql);
-			return new Operation<ulong> {Data = count};
+			return await members.CountAsync(_dialect, _connectionString, cancellationToken);
 		}
 
 		public Task<Operation<ulong>> CountAsync<T>(CancellationToken cancellationToken = default) => CountAsync(typeof(T), cancellationToken);
