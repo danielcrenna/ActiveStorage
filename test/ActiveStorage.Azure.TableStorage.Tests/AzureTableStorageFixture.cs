@@ -4,11 +4,11 @@
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using ActiveStorage.Azure.TableStorage;
+using ActiveStorage.Tests.Fixtures;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 
-namespace ActiveStorage.Tests.Fixtures
+namespace ActiveStorage.Azure.TableStorage.Tests
 {
 	public sealed class AzureTableStorageFixture : IStoreFixture
 	{
@@ -46,6 +46,11 @@ namespace ActiveStorage.Tests.Fixtures
 		public IObjectSaveStore GetSaveStore()
 		{
 			return new TableSaveStore(_table);
+		}
+
+		public IObjectCreateStore GetCreateStore()
+		{
+			return new TableCreateStore(_table);
 		}
 
 		public ISingleObjectQueryByExampleStore GetSingleObjectQueryByExampleStore()

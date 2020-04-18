@@ -1,20 +1,14 @@
 ﻿// Copyright (c) Daniel Crenna & Contributors. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Threading.Tasks;
-using ActiveLogging;
-using ActiveStorage.Internal;
-using ActiveStorage.Sql;
-using ActiveStorage.Sqlite;
 using ActiveStorage.Tests.Fixtures;
 using ActiveStorage.Tests.Migrations.SimpleObject;
 using ActiveStorage.Tests.Models;
-using Microsoft.Extensions.Logging.Abstractions;
 
-namespace ActiveStorage.Tests.ObjectCreateStore
+namespace ActiveStorage.Tests.Sqlite
 {
-	public class SqliteSaveStoreTests : ICreateStoreTests
+	public class SqliteCreateStoreTests : ICreateStoreTests
 	{
 		public async Task<bool> Empty_database_has_no_objects()
 		{

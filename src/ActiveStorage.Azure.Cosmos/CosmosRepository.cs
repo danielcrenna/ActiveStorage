@@ -153,17 +153,24 @@ namespace ActiveStorage.Azure.Cosmos
 		{
 			cancellationToken.ThrowIfCancellationRequested();
 
+			var partitionKey = new PartitionKey(item.Id);
+
 			try
 			{
-				var response = await _container.ReadItemAsync<T>(item.Id, new PartitionKey(item.Id),
-					cancellationToken: cancellationToken);
+				var options = new ItemRequestOptions();
 
-				// FIXME: add metrics
+				var response = await _container.ReadItemAsync<T>(item.Id, partitionKey, cancellationToken: cancellationToken);
+         
+				if ((int) response.StatusCode > 199 && (int) response.StatusCode < 300)
+				{
+					response = await _container.ReplaceItemAsync(item, item.Id, partitionKey, cancellationToken: cancellationToken);
+				}
+
 				return response.Resource;
 			}
 			catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
 			{
-				var response = await _container.CreateItemAsync(item, new PartitionKey(item.Id),
+				var response = await _container.CreateItemAsync(item, partitionKey,
 					cancellationToken: cancellationToken);
 
 				// FIXME: add metrics

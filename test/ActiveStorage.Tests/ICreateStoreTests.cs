@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace ActiveStorage.Tests.ObjectCreateStore
+namespace ActiveStorage.Tests
 {
 	public interface ICreateStoreTests
 	{

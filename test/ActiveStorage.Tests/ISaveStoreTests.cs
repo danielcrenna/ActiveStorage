@@ -3,7 +3,7 @@
 
 using System.Threading.Tasks;
 
-namespace ActiveStorage.Tests.ObjectSaveStore
+namespace ActiveStorage.Tests
 {
 	public interface ISaveStoreTests
 	{

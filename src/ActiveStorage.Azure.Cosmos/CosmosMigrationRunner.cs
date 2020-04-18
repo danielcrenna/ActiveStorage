@@ -31,8 +31,7 @@ namespace ActiveStorage.Azure.Cosmos
 		public async Task<Container> CreateContainerIfNotExistsAsync(CancellationToken cancellationToken = default)
 		{
 			var databaseName = _options.CurrentValue.DatabaseId;
-			var databaseResponse =
-				await _client.CreateDatabaseIfNotExistsAsync(databaseName, cancellationToken: cancellationToken);
+			var databaseResponse = await _client.CreateDatabaseIfNotExistsAsync(databaseName, cancellationToken: cancellationToken);
 
 			var containerName = _options.CurrentValue.ContainerId;
 			var containerResponse = await databaseResponse.Database.CreateContainerIfNotExistsAsync(containerName,
