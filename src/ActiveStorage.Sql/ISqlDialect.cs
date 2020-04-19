@@ -27,10 +27,10 @@ namespace ActiveStorage.Sql
 		{
 			return !members.DeclaringType.TryGetAttribute(true, out TableAttribute attribute) ? null : attribute.Schema;
 		}
+
 		string ResolveColumnName(AccessorMember member)
 		{
 			return !member.TryGetAttribute(out ColumnAttribute attribute) ? member.Name : attribute.Name;
 		}
-
 	}
 }

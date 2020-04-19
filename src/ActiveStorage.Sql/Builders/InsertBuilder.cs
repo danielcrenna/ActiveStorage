@@ -25,7 +25,7 @@ namespace ActiveStorage.Sql.Builders
 
 				sb.Append("VALUES (")
 					// ReSharper disable once PossibleMultipleEnumeration
-					.AppendColumnNames(d, columns, columnCount)
+					.AppendColumnParameters(d, columns, columnCount)
 					.Append(") ");
 
 				if (returnKeys && d.TryFetchInsertedKey(FetchInsertedKeyLocation.AfterStatement, out var fetchAfterStatement))

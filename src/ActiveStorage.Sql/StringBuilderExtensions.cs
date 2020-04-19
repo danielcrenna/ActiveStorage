@@ -31,6 +31,19 @@ namespace ActiveStorage.Sql
 			return sb;
 		}
 
+		public static StringBuilder AppendColumnParameters(this StringBuilder sb, ISqlDialect d, IEnumerable<AccessorMember> columns, int columnCount)
+		{
+			var i = 0;
+			foreach (var column in columns)
+			{
+				sb.AppendParameter(d, d.ResolveColumnName(column));
+				if (i < columnCount - 1)
+					sb.Append(", ");
+				i++;
+			}
+			return sb;
+		}
+
 		public static StringBuilder AppendName(this StringBuilder sb, ISqlDialect d, object value)
 		{
 			return sb.Append(d.StartIdentifier).Append(value).Append(d.EndIdentifier);
