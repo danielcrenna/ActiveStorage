@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using TypeKitchen;
 
@@ -9,6 +10,9 @@ namespace ActiveStorage.Sql
 {
 	internal static class StringBuilderExtensions
 	{
+		public static StringBuilder Append(this StringBuilder sb, int tabs, string value) => sb.Append(Enumerable.Repeat("    ", tabs)).Append(value);
+		public static StringBuilder AppendLine(this StringBuilder sb, int tabs, string value) => sb.Append(Enumerable.Repeat("    ", tabs)).AppendLine(value);
+
 		public static StringBuilder AppendTable(this StringBuilder sb, ISqlDialect d, AccessorMembers members) => sb.AppendTable(d, d.ResolveTableName(members), d.ResolveSchemaName(members));
 		public static StringBuilder AppendTable(this StringBuilder sb, ISqlDialect d, string table, string schema)
 		{

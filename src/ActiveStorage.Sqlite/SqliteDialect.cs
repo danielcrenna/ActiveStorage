@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Daniel Crenna & Contributors. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using ActiveStorage.Sql;
 using ActiveStorage.Sqlite.Internal;
 using Dapper;
@@ -35,5 +36,6 @@ namespace ActiveStorage.Sqlite
 		}
 
 		public SqliteDialect() : base(cs => new SqliteConnection(cs)) { }
+		public SqliteDialect(Func<string, SqliteConnection> connectionFactory) : base(connectionFactory) { }
 	}
 }

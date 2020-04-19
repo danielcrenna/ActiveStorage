@@ -3,7 +3,6 @@
 
 using System.Threading.Tasks;
 using ActiveStorage.Tests;
-using ActiveStorage.Tests.Fixtures;
 using ActiveStorage.Tests.Models;
 
 namespace ActiveStorage.Azure.TableStorage.Tests
@@ -40,7 +39,26 @@ namespace ActiveStorage.Azure.TableStorage.Tests
 
 		public async Task<bool> Cannot_create_same_object_twice()
 		{
-			throw new System.NotImplementedException();
+			using var db = new AzureTableStorageFixture();
+			await db.OpenAsync();
+
+			var instance = new SimpleObject {Id = 1};
+
+			var store = db.GetCreateStore();
+			var result = await store.CreateAsync(instance);
+			if (!result.Succeeded)
+				return false;
+
+			result = await store.CreateAsync(instance);
+			if (result.Succeeded)
+				return false;
+
+			var counter = db.GetCountStore();
+			var count = await counter.CountAsync(typeof(SimpleObject));
+			if (!count.Succeeded)
+				return false;
+
+			return count.Data == 1;
 		}
 	}
 }

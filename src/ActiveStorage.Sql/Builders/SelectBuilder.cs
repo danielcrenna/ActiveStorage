@@ -7,7 +7,7 @@ using TypeKitchen;
 
 namespace ActiveStorage.Sql.Builders
 {
-	public static class SelectBuilder
+	internal static class SelectBuilder
 	{
 		public static string Select(this ISqlDialect d, AccessorMembers members, object example)
 		{

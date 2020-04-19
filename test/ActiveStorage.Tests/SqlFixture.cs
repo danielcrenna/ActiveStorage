@@ -6,9 +6,10 @@ using System.Data;
 using ActiveLogging;
 using ActiveStorage.Internal;
 using ActiveStorage.Sql;
+using ActiveStorage.Tests.Fixtures;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace ActiveStorage.Tests.Fixtures
+namespace ActiveStorage.Tests
 {
 	public abstract class SqlFixture : ISqlStoreFixture
 	{

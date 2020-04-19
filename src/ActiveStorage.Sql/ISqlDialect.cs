@@ -32,5 +32,10 @@ namespace ActiveStorage.Sql
 		{
 			return !member.TryGetAttribute(out ColumnAttribute attribute) ? member.Name : attribute.Name;
 		}
+
+		string ResolveColumnTypeName(AccessorMember member)
+		{
+			return member.Type.GetPreferredTypeName();
+		}
 	}
 }

@@ -5,7 +5,7 @@ using TypeKitchen;
 
 namespace ActiveStorage.Sql.Builders
 {
-	public static class CountBuilder
+	internal static class CountBuilder
 	{
 		public static string Count(this ISqlDialect d, AccessorMembers members)
 		{

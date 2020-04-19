@@ -5,9 +5,10 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using ActiveStorage.Sqlite;
+using ActiveStorage.Tests.Fixtures;
 using Microsoft.Data.Sqlite;
 
-namespace ActiveStorage.Tests.Fixtures
+namespace ActiveStorage.Tests
 {
 	public class SqliteFixture<TMigrationInfo> : SqlFixture
 	{
