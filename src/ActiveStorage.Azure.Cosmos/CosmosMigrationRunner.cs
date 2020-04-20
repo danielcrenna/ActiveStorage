@@ -19,13 +19,7 @@ namespace ActiveStorage.Azure.Cosmos
 			_options = options;
 
 			var storageOptions = _options.Get(slot);
-			_client = new CosmosClient(storageOptions.AccountEndpoint?.OriginalString, storageOptions.AccountKey,
-				new CosmosClientOptions
-				{
-					AllowBulkExecution = true,
-					ConnectionMode = ConnectionMode.Gateway,
-					MaxRetryAttemptsOnRateLimitedRequests = 100
-				});
+			_client = new CosmosClient(storageOptions.AccountEndpoint?.OriginalString, storageOptions.AccountKey, options.CurrentValue.ClientOptions);
 		}
 
 		public async Task<Container> CreateContainerIfNotExistsAsync(CancellationToken cancellationToken = default)

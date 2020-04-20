@@ -3,6 +3,7 @@
 
 using System;
 using System.Linq;
+using Microsoft.Azure.Cosmos;
 
 namespace ActiveStorage.Azure.Cosmos.Configuration
 {
@@ -15,6 +16,8 @@ namespace ActiveStorage.Azure.Cosmos.Configuration
 		public string[] PartitionKeyPaths { get; set; } = {"/id"};
 		public int? OfferThroughput { get; set; } = 400;
 		public bool SharedCollection { get; set; }
+
+		public CosmosClientOptions ClientOptions { get; set; } = new CosmosClientOptions();
 
 		public string PartitionKeyPath => string.Join("/", PartitionKeyPaths ?? Enumerable.Empty<string>());
 	}

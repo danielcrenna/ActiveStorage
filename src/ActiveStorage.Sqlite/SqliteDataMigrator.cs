@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using ActiveStorage.Sql.Builders;
 
@@ -22,7 +23,7 @@ namespace ActiveStorage.Sqlite
 			_providers = providers;
 		}
 
-		public Task UpAsync()
+		public async Task UpAsync(CancellationToken cancellationToken = default)
 		{
 			var runner = new SqliteMigrationRunner(_connectionString);
 			runner.CreateDatabaseIfNotExists();
@@ -34,13 +35,11 @@ namespace ActiveStorage.Sqlite
 			{
 				foreach(var subject in provider.GetMigrationSubjects())
 				{
-					var migration = dialect.Up(subject, ++sequence, _infoProvider);
+					var sql = dialect.Up(subject, ++sequence, _infoProvider);
+					var parameters = new Dictionary<string, object>();
+					await dialect.ExecuteAsync(_connectionString, sql, parameters, cancellationToken);
 				}
 			}
-			
-			// runner.MigrateUp(...);
-
-			return Task.CompletedTask;
 		}
 	}
 }

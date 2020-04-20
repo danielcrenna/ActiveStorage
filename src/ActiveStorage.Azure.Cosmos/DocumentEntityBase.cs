@@ -2,11 +2,13 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using Newtonsoft.Json;
 
 namespace ActiveStorage.Azure.Cosmos
 {
 	public abstract class DocumentEntityBase<T> : IDocumentEntity
 	{
+		[JsonProperty("id")]
 		public string Id { get; set; }
 
 		public string DocumentType

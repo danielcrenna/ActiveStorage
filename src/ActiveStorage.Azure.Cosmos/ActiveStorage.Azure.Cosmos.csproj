@@ -14,8 +14,4 @@
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.8.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ActiveStorage\ActiveStorage.csproj" />
-  </ItemGroup>
-
 </Project>

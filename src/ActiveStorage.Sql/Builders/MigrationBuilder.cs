@@ -1,4 +1,5 @@
-﻿using TypeKitchen;
+﻿using System.Text;
+using TypeKitchen;
 
 namespace ActiveStorage.Sql.Builders
 {
@@ -8,31 +9,46 @@ namespace ActiveStorage.Sql.Builders
 		{
 			return Pooling.StringBuilderPool.Scoped(sb =>
 			{
-				sb.AppendLine($"[Migration({sequence})]");
-				sb.AppendLine($"public sealed class Migration_{sequence} : AutoReversingMigration");
-				sb.AppendLine($"{{");
-
-				sb.AppendLine(1, "public override void Up()");
-				sb.AppendLine(1, "{");
-				
-				sb.AppendLine(2, $"Table.Create(\"{d.ResolveTableName(members)}\")");
-				foreach (var member in members)
-				{
-					if (provider.IsIgnored(member))
-						continue;
-
-					if (provider.IsSaved(member))
-					{
-						sb.Append(3, $".WithColumn(\"{d.ResolveColumnName(member)}\")");
-						sb.Append($".As{d.ResolveColumnTypeName(member)}()");
-						sb.AppendLine();
-					}
-				}
-				sb.AppendLine(3, ";");
-				sb.AppendLine(1, "}");
-
-				sb.AppendLine("}");
+				AppendCreateIfNotExists(d, members, provider, sb);
 			});
+		}
+
+		private static void AppendCreateIfNotExists(ISqlDialect d, AccessorMembers members, IDataInfoProvider provider, StringBuilder sb)
+		{
+			sb.Append($"CREATE TABLE IF NOT EXISTS {d.StartIdentifier}{d.ResolveTableName(members)}{d.EndIdentifier}");
+			sb.Append("(");
+
+			var columns = 0;
+			foreach (var member in members)
+			{
+				if (provider.IsIgnored(member))
+					continue;
+
+				if (provider.IsSaved(member))
+					columns++;
+			}
+
+			var count = 0;
+			foreach (var member in members)
+			{
+				if (provider.IsIgnored(member))
+					continue;
+
+				if (provider.IsSaved(member))
+				{
+					sb.Append($"{d.StartIdentifier}{d.ResolveColumnName(member)}{d.EndIdentifier}")
+					  .Append(' ')
+					  .Append(d.ResolveColumnTypeName(member))
+					  .Append(d.ResolveColumnLimit(member))
+					  .Append(' ')
+					  .Append(d.ResolveColumnNullability(member));
+
+					if (++count < columns)
+						sb.Append(", ");
+				}
+			}
+
+			sb.AppendLine(");");
 		}
 	}
 }

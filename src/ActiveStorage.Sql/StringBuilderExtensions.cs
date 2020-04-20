@@ -10,7 +10,7 @@ namespace ActiveStorage.Sql
 {
 	internal static class StringBuilderExtensions
 	{
-		public static StringBuilder Append(this StringBuilder sb, int tabs, string value) => sb.Append(Enumerable.Repeat("    ", tabs)).Append(value);
+		public static StringBuilder Append(this StringBuilder sb, int tabs, string value) => sb.Append(TabString(tabs)).Append(value);
 		public static StringBuilder AppendLine(this StringBuilder sb, int tabs, string value) => sb.Append(Enumerable.Repeat("    ", tabs)).AppendLine(value);
 
 		public static StringBuilder AppendTable(this StringBuilder sb, ISqlDialect d, AccessorMembers members) => sb.AppendTable(d, d.ResolveTableName(members), d.ResolveSchemaName(members));
@@ -71,5 +71,7 @@ namespace ActiveStorage.Sql
 			}
 			return sb;
 		}
+
+		private static string TabString(int tabs) => new string(' ', tabs * 4);
 	}
 }

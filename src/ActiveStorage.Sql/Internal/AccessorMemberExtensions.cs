@@ -29,7 +29,6 @@ namespace ActiveStorage.Sql.Internal
 
 			var sql = dialect.InsertInto(members, hash.Keys, hash.Count, false);
 			var parameters = hash.Keys.ToDictionary(k => $"{dialect.Parameter}{dialect.ResolveColumnName(k)}", v => hash[v]);
-			
 			var inserted = await dialect.ExecuteAsync(connectionString, sql, parameters, cancellationToken);
 			Debug.Assert(inserted == 1);
 		}
