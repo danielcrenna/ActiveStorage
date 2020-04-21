@@ -1,14 +1,13 @@
 // Copyright (c) Daniel Crenna & Contributors. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using ActiveErrors;
 
 namespace ActiveStorage.Azure.Cosmos
 {
-	public sealed class CosmosObjectCreateStore : IObjectCreateStore
+	public sealed class CosmosObjectCreateStore : IObjectAppendStore
 	{
 		private readonly ICosmosRepository _cosmos;
 
@@ -17,11 +16,11 @@ namespace ActiveStorage.Azure.Cosmos
 			_cosmos = cosmos;
 		}
 		
-		public async Task<Operation<ObjectCreate>> CreateAsync(object @object, CancellationToken cancellationToken = default, params string[] fields)
+		public async Task<Operation<ObjectAppend>> CreateAsync(object @object, CancellationToken cancellationToken = default, params string[] fields)
 		{
 			var wrapper = new DocumentWrapper(@object);
 			await _cosmos.CreateAsync(wrapper, cancellationToken);
-			return new Operation<ObjectCreate>(ObjectCreate.Created);
+			return new Operation<ObjectAppend>(ObjectAppend.Created);
 		}
 
 		/// <summary> Warning: mutable struct! </summary>

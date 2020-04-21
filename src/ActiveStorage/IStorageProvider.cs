@@ -5,6 +5,6 @@ namespace ActiveStorage
 {
 	public interface IStorageProvider
 	{
-		IObjectCreateStore GetAppender(string slot);
+		IObjectAppendStore GetAppender(string slot);
 	}
 }

@@ -12,15 +12,15 @@ using TypeKitchen;
 
 namespace ActiveStorage.Sql
 {
-	public sealed class SqlObjectCreateStore : IObjectCreateStore
+	public sealed class SqlObjectAppendStore : IObjectAppendStore
 	{
 		private readonly string _connectionString;
 		private readonly ISqlDialect _dialect;
 		private readonly IEnumerable<IFieldTransform> _transforms;
 		private readonly IDataInfoProvider _provider;
-		private readonly ISafeLogger<SqlObjectCreateStore> _logger;
+		private readonly ISafeLogger<SqlObjectAppendStore> _logger;
 
-		public SqlObjectCreateStore(string connectionString, ISqlDialect dialect, IDataInfoProvider provider, ISafeLogger<SqlObjectCreateStore> logger = null, params IFieldTransform[] transforms)
+		public SqlObjectAppendStore(string connectionString, ISqlDialect dialect, IDataInfoProvider provider, ISafeLogger<SqlObjectAppendStore> logger = null, params IFieldTransform[] transforms)
 		{
 			_connectionString = connectionString;
 			_dialect = dialect;
@@ -29,7 +29,7 @@ namespace ActiveStorage.Sql
 			_logger = logger;
 		}
 
-		public async Task<Operation<ObjectCreate>> CreateAsync(object @object, CancellationToken cancellationToken = default, params string[] fields)
+		public async Task<Operation<ObjectAppend>> CreateAsync(object @object, CancellationToken cancellationToken = default, params string[] fields)
 		{
 			cancellationToken.ThrowIfCancellationRequested();
 
@@ -38,11 +38,11 @@ namespace ActiveStorage.Sql
 				var members = AccessorMembers.Create(@object, AccessorMemberTypes.Properties, AccessorMemberScope.Public);
 				var hash = members.ToHash(@object, fields, _provider, _transforms);
 				await members.InsertAsync(_dialect, _connectionString, hash, cancellationToken);
-				return Operation.FromResult(ObjectCreate.Created);
+				return Operation.FromResult(ObjectAppend.Created);
 			}
 			catch (StorageException e)
 			{
-				return Operation.FromResult(ObjectCreate.Error, new List<Error>
+				return Operation.FromResult(ObjectAppend.Error, new List<Error>
 				{
 					new Error(ErrorEvents.AggregateErrors, e.Message)
 				});

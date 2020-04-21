@@ -10,8 +10,12 @@
 
   <ItemGroup>
     <PackageReference Include="ActiveErrors" Version="1.0.5" />
-    <PackageReference Include="ActiveLogging" Version="1.0.3" />
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\ActiveLogging\src\ActiveLogging\ActiveLogging.csproj" />
+    <ProjectReference Include="..\ActiveStorage\ActiveStorage.csproj" />
   </ItemGroup>
 
 </Project>

@@ -14,7 +14,7 @@ namespace ActiveStorage.Internal
 			_appenders = appenders;
 		}
 
-		public IObjectCreateStore GetAppender(string slot)
+		public IObjectAppendStore GetAppender(string slot)
 		{
 			foreach (var appender in _appenders)
 			{

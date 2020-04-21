@@ -4,6 +4,7 @@
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using ActiveStorage.Tests;
 using ActiveStorage.Tests.Fixtures;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
@@ -48,9 +49,9 @@ namespace ActiveStorage.Azure.TableStorage.Tests
 			return new TableSaveStore(_table);
 		}
 
-		public IObjectCreateStore GetCreateStore()
+		public IObjectAppendStore GetAppendStore()
 		{
-			return new TableCreateStore(_table);
+			return new TableAppendStore(_table);
 		}
 
 		public ISingleObjectQueryByExampleStore GetSingleObjectQueryByExampleStore()

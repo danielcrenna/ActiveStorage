@@ -6,10 +6,8 @@ using System.Runtime.Serialization;
 namespace ActiveStorage
 {
 	[DataContract]
-	public enum ObjectCreate
+	public enum ObjectAppend
 	{
-		[EnumMember] NotFound,
-		[EnumMember] NoChanges,
 		[EnumMember] Created,
 		[EnumMember] Error
 	}

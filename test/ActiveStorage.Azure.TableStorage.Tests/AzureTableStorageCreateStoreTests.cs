@@ -24,9 +24,9 @@ namespace ActiveStorage.Azure.TableStorage.Tests
 			using var db = new AzureTableStorageFixture();
 			await db.OpenAsync();
 
-			var store = db.GetCreateStore();
+			var store = db.GetAppendStore();
 			var result = await store.CreateAsync(new SimpleObject {Id = 1});
-			if (!result.Succeeded || result.Data != ObjectCreate.Created)
+			if (!result.Succeeded || result.Data != ObjectAppend.Created)
 				return false;
 
 			var counter = db.GetCountStore();
@@ -44,7 +44,7 @@ namespace ActiveStorage.Azure.TableStorage.Tests
 
 			var instance = new SimpleObject {Id = 1};
 
-			var store = db.GetCreateStore();
+			var store = db.GetAppendStore();
 			var result = await store.CreateAsync(instance);
 			if (!result.Succeeded)
 				return false;

@@ -18,12 +18,12 @@ namespace ActiveStorage.Sqlite
 			_dataInfoProvider = dataInfoProvider;
 		}
 
-		public IObjectCreateStore GetAppender(string slot)
+		public IObjectAppendStore GetAppender(string slot)
 		{
 			if (_slot != slot)
 				return default;
 			var dialect = new SqliteDialect();
-			return new SqlObjectCreateStore(_connectionString, dialect, _dataInfoProvider);
+			return new SqlObjectAppendStore(_connectionString, dialect, _dataInfoProvider);
 		}
 	}
 }

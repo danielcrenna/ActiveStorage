@@ -3,12 +3,13 @@
 
 using System;
 
-namespace ActiveStorage.Tests.Fixtures
+namespace ActiveStorage.Tests
 {
 	public interface IStoreFixture : IDisposable
 	{
 		IObjectCountStore GetCountStore();
 		IObjectSaveStore GetSaveStore();
+		IObjectAppendStore GetAppendStore();
 		ISingleObjectQueryByExampleStore GetSingleObjectQueryByExampleStore();
 	}
 }

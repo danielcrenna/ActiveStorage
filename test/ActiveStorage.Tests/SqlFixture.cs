@@ -74,6 +74,11 @@ namespace ActiveStorage.Tests
 			return new SqlObjectCountStore(ConnectionString, _dialect, new SafeLogger<SqlObjectCountStore>(new NullLogger<SqlObjectCountStore>()));
 		}
 
+		public IObjectAppendStore GetAppendStore()
+		{
+			return new SqlObjectAppendStore(ConnectionString, _dialect, new AttributeDataInfoProvider(), new SafeLogger<SqlObjectAppendStore>(new NullLogger<SqlObjectAppendStore>()));
+		}
+
 		public ISingleObjectQueryByExampleStore GetSingleObjectQueryByExampleStore()
 		{
 			return new SqlSingleObjectQueryByExampleStore(ConnectionString, _dialect, new SafeLogger<SqlSingleObjectQueryByExampleStore>(new NullLogger<SqlSingleObjectQueryByExampleStore>()));
@@ -87,11 +92,11 @@ namespace ActiveStorage.Tests
 			return store;
 		}
 
-		public IObjectCreateStore GetCreateStore()
+		public IObjectAppendStore GetCreateStore()
 		{
 			var transform = new CreatedAtTransform(() => DateTimeOffset.UtcNow);
-			var logger = new SafeLogger<SqlObjectCreateStore>(new NullLogger<SqlObjectCreateStore>());
-			var store = new SqlObjectCreateStore(ConnectionString, _dialect, new AttributeDataInfoProvider(), logger, transform);
+			var logger = new SafeLogger<SqlObjectAppendStore>(new NullLogger<SqlObjectAppendStore>());
+			var store = new SqlObjectAppendStore(ConnectionString, _dialect, new AttributeDataInfoProvider(), logger, transform);
 			return store;
 		}
 

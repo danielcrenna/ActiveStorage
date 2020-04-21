@@ -7,9 +7,9 @@ using ActiveErrors;
 
 namespace ActiveStorage
 {
-	public interface IObjectCreateStore
+	public interface IObjectAppendStore
 	{
-		Task<Operation<ObjectCreate>> CreateAsync(object @object, CancellationToken cancellationToken = default,
+		Task<Operation<ObjectAppend>> CreateAsync(object @object, CancellationToken cancellationToken = default,
 			params string[] fields);
 	}
 }
