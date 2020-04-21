@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using ActiveErrors;
-using ActiveLogging;
 using ActiveStorage.Internal;
 using ActiveStorage.Sql.Internal;
+using Microsoft.Extensions.Logging;
 using TypeKitchen;
 
 namespace ActiveStorage.Sql
@@ -18,9 +18,9 @@ namespace ActiveStorage.Sql
 		private readonly ISqlDialect _dialect;
 		private readonly IEnumerable<IFieldTransform> _transforms;
 		private readonly IDataInfoProvider _provider;
-		private readonly ISafeLogger<SqlObjectSaveStore> _logger;
+		private readonly ILogger<SqlObjectSaveStore> _logger;
 
-		public SqlObjectSaveStore(string connectionString, ISqlDialect dialect, IDataInfoProvider provider, ISafeLogger<SqlObjectSaveStore> logger = null, params IFieldTransform[] transforms)
+		public SqlObjectSaveStore(string connectionString, ISqlDialect dialect, IDataInfoProvider provider, ILogger<SqlObjectSaveStore> logger = null, params IFieldTransform[] transforms)
 		{
 			_connectionString = connectionString;
 			_dialect = dialect;

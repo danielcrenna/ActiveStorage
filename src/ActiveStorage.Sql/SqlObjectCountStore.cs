@@ -5,8 +5,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using ActiveErrors;
-using ActiveLogging;
 using ActiveStorage.Sql.Internal;
+using Microsoft.Extensions.Logging;
 using TypeKitchen;
 
 namespace ActiveStorage.Sql
@@ -15,9 +15,9 @@ namespace ActiveStorage.Sql
 	{
 		private readonly string _connectionString;
 		private readonly ISqlDialect _dialect;
-		private readonly ISafeLogger<SqlObjectCountStore> _logger;
+		private readonly ILogger<SqlObjectCountStore> _logger;
 
-		public SqlObjectCountStore(string connectionString, ISqlDialect dialect, ISafeLogger<SqlObjectCountStore> logger)
+		public SqlObjectCountStore(string connectionString, ISqlDialect dialect, ILogger<SqlObjectCountStore> logger)
 		{
 			_connectionString = connectionString;
 			_dialect = dialect;

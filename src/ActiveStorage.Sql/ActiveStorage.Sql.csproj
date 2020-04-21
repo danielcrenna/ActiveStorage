@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ActiveLogging\src\ActiveLogging\ActiveLogging.csproj" />
     <ProjectReference Include="..\ActiveStorage\ActiveStorage.csproj" />
   </ItemGroup>
   

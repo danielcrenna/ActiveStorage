@@ -3,7 +3,6 @@
 
 using System;
 using System.Data;
-using ActiveLogging;
 using ActiveStorage.Internal;
 using ActiveStorage.Sql;
 using ActiveStorage.Tests.Fixtures;
@@ -71,22 +70,22 @@ namespace ActiveStorage.Tests
 
 		public IObjectCountStore GetCountStore()
 		{
-			return new SqlObjectCountStore(ConnectionString, _dialect, new SafeLogger<SqlObjectCountStore>(new NullLogger<SqlObjectCountStore>()));
+			return new SqlObjectCountStore(ConnectionString, _dialect, new NullLogger<SqlObjectCountStore>());
 		}
 
 		public IObjectAppendStore GetAppendStore()
 		{
-			return new SqlObjectAppendStore(ConnectionString, _dialect, new AttributeDataInfoProvider(), new SafeLogger<SqlObjectAppendStore>(new NullLogger<SqlObjectAppendStore>()));
+			return new SqlObjectAppendStore(ConnectionString, _dialect, new AttributeDataInfoProvider(), new NullLogger<SqlObjectAppendStore>());
 		}
 
 		public ISingleObjectQueryByExampleStore GetSingleObjectQueryByExampleStore()
 		{
-			return new SqlSingleObjectQueryByExampleStore(ConnectionString, _dialect, new SafeLogger<SqlSingleObjectQueryByExampleStore>(new NullLogger<SqlSingleObjectQueryByExampleStore>()));
+			return new SqlSingleObjectQueryByExampleStore(ConnectionString, _dialect, new NullLogger<SqlSingleObjectQueryByExampleStore>());
 		}
 
 		public IObjectSaveStore GetSaveStore()
 		{
-			var logger = new SafeLogger<SqlObjectSaveStore>(new NullLogger<SqlObjectSaveStore>());
+			var logger = new NullLogger<SqlObjectSaveStore>();
 			var transform = new CreatedAtTransform(() => DateTimeOffset.UtcNow);
 			var store = new SqlObjectSaveStore(ConnectionString, _dialect, new AttributeDataInfoProvider(), logger, transform);
 			return store;
@@ -95,7 +94,7 @@ namespace ActiveStorage.Tests
 		public IObjectAppendStore GetCreateStore()
 		{
 			var transform = new CreatedAtTransform(() => DateTimeOffset.UtcNow);
-			var logger = new SafeLogger<SqlObjectAppendStore>(new NullLogger<SqlObjectAppendStore>());
+			var logger = new NullLogger<SqlObjectAppendStore>();
 			var store = new SqlObjectAppendStore(ConnectionString, _dialect, new AttributeDataInfoProvider(), logger, transform);
 			return store;
 		}

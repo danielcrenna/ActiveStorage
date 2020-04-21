@@ -3,11 +3,9 @@
 
 using System;
 using System.Threading.Tasks;
-using ActiveLogging;
 using ActiveStorage.Internal;
 using ActiveStorage.Sql;
 using ActiveStorage.Sqlite;
-using ActiveStorage.Tests.Fixtures;
 using ActiveStorage.Tests.Migrations.SimpleObject;
 using ActiveStorage.Tests.Models;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -35,7 +33,7 @@ namespace ActiveStorage.Tests.Sqlite
 			db.Open();
 
 			var transform = new CreatedAtTransform(() => DateTimeOffset.UtcNow);
-			var logger = new SafeLogger<SqlObjectSaveStore>(new NullLogger<SqlObjectSaveStore>());
+			var logger = new NullLogger<SqlObjectSaveStore>();
 			var store = new SqlObjectSaveStore(db.ConnectionString, new SqliteDialect(), new AttributeDataInfoProvider(), logger, transform);
 			
 			var result = await store.SaveAsync(new SimpleObject {Id = 1});

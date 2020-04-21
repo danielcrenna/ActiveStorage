@@ -10,12 +10,12 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using ActiveLogging;
 using ActiveStorage.Azure.Cosmos.Configuration;
 using ActiveStorage.Azure.Cosmos.Internal;
 using ActiveStorage.DataAnnotations;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Linq;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TypeKitchen;
 
@@ -25,12 +25,11 @@ namespace ActiveStorage.Azure.Cosmos
 	{
 		private readonly Container _container;
 
-		private readonly ISafeLogger<CosmosRepository> _logger;
+		private readonly ILogger<CosmosRepository> _logger;
 		private readonly IOptionsMonitor<CosmosStorageOptions> _options;
 		private readonly string _slot;
 
-		public CosmosRepository(string slot, Container container, IOptionsMonitor<CosmosStorageOptions> options,
-			ISafeLogger<CosmosRepository> logger)
+		public CosmosRepository(string slot, Container container, IOptionsMonitor<CosmosStorageOptions> options, ILogger<CosmosRepository> logger)
 		{
 			_slot = slot;
 			_container = container;
