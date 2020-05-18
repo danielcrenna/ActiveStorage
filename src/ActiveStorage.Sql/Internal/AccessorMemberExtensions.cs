@@ -33,6 +33,25 @@ namespace ActiveStorage.Sql.Internal
 			Debug.Assert(inserted == 1);
 		}
 
+		public static async Task<IEnumerable<T>> SelectAsync<T>(this AccessorMembers members, ISqlDialect dialect, string connectionString, CancellationToken cancellationToken = default)
+		{
+			cancellationToken.ThrowIfCancellationRequested();
+
+			var sql = dialect.Select(members);
+			var selected = await dialect.QueryAsync<T>(connectionString, sql, cancellationToken: cancellationToken);
+			return selected;
+		}
+
+		public static async Task<IEnumerable<T>> SelectAsync<T>(this AccessorMembers members, ISqlDialect dialect, string connectionString, IReadOnlyDictionary<AccessorMember, object> hash, CancellationToken cancellationToken = default)
+		{
+			cancellationToken.ThrowIfCancellationRequested();
+
+			var sql = dialect.Select(members, hash);
+			var parameters = hash.Keys.ToDictionary(k => $"{dialect.Parameter}{dialect.ResolveColumnName(k)}", v => hash[v]);
+			var selected = await dialect.QueryAsync<T>(connectionString, sql, parameters, cancellationToken);
+			return selected;
+		}
+
 		public static IReadOnlyDictionary<AccessorMember, object> ToHash(this AccessorMembers members, object @object, params IFieldTransform[] transforms)
 		{
 			var accessor = ReadAccessor.Create(@object, members.Types, members.Scope);

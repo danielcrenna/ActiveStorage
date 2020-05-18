@@ -15,18 +15,4 @@ namespace ActiveStorage
 		Task<Operation<IEnumerable<T>>> QueryByExampleAsync<T>(object example,
 			CancellationToken cancellationToken = default);
 	}
-
-	public interface IObjectQueryByExamplePagedStore
-	{
-		Task<Operation<IPage<T>>> QueryByExampleAsync<T>(CancellationToken cancellationToken = default);
-
-		Task<Operation<IPage<T>>> QueryByExampleAsync<T>(object example,
-			CancellationToken cancellationToken = default);
-
-		Task<Operation<T>> QuerySingleOrDefaultByExampleAsync<T>(object example,
-			CancellationToken cancellationToken = default);
-
-		Task<Operation<T>> QueryFirstOrDefaultByExampleAsync<T>(object example,
-			CancellationToken cancellationToken = default);
-	}
 }

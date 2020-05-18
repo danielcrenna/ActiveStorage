@@ -14,7 +14,7 @@ namespace ActiveStorage.Sql.Builders
 			return d.Select(members, members.ToHash(example));
 		}
 
-		private static string Select(this ISqlDialect d, AccessorMembers members, IReadOnlyDictionary<AccessorMember, object> hash)
+		public static string Select(this ISqlDialect d, AccessorMembers members, IReadOnlyDictionary<AccessorMember, object> hash)
 		{
 			return Pooling.StringBuilderPool.Scoped(sb =>
 			{
@@ -23,6 +23,17 @@ namespace ActiveStorage.Sql.Builders
 				sb.Append(" FROM ");
 				sb.AppendTable(d, members);
 				sb.AppendWhereClause(d, hash);
+			});
+		}
+
+		public static string Select(this ISqlDialect d, AccessorMembers members)
+		{
+			return Pooling.StringBuilderPool.Scoped(sb =>
+			{
+				sb.Append("SELECT ");
+				sb.AppendColumnNames(d, members, members.Count);
+				sb.Append(" FROM ");
+				sb.AppendTable(d, members);
 			});
 		}
 	}

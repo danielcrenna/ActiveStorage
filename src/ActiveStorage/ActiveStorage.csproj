@@ -4,13 +4,16 @@
   <Import Project="$(ProjectDir)..\..\build\build.props" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netcoreapp5.0</TargetFramework>
     <Configurations>Debug;Release;Package</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ActiveErrors" Version="1.0.5" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\ActiveErrors\src\ActiveErrors\ActiveErrors.csproj" />
   </ItemGroup>
 
 </Project>

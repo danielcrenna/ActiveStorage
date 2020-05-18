@@ -3,10 +3,8 @@
 
 namespace ActiveStorage
 {
-	public interface IStorageProvider
+	public interface IFetcherProvider
 	{
-		IObjectAppendStore GetAppender(string slot);
-		IObjectCountStore GetCounter(string slot);
 		IObjectFetchStore GetFetcher(string slot);
 	}
 }

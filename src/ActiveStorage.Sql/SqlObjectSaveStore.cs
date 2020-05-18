@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ActiveErrors;
@@ -12,6 +13,44 @@ using TypeKitchen;
 
 namespace ActiveStorage.Sql
 {
+	public sealed class SqlObjectFetchStore : IObjectFetchStore
+	{
+		private readonly string _connectionString;
+		private readonly ISqlDialect _dialect;
+		private readonly IEnumerable<IFieldTransform> _transforms;
+		private readonly IDataInfoProvider _provider;
+		private readonly ILogger<SqlObjectFetchStore> _logger;
+
+		public SqlObjectFetchStore(string connectionString, ISqlDialect dialect, IDataInfoProvider provider, ILogger<SqlObjectFetchStore> logger = null, 
+			params IFieldTransform[] transforms)
+		{
+			_connectionString = connectionString;
+			_dialect = dialect;
+			_transforms = transforms;
+			_provider = provider;
+			_logger = logger;
+		}
+		
+		public async Task<Operation<IEnumerable<T>>> FetchAsync<T>(CancellationToken cancellationToken = default)
+		{
+			cancellationToken.ThrowIfCancellationRequested();
+
+			try
+			{
+				var members = AccessorMembers.Create(typeof(T), AccessorMemberTypes.Properties, AccessorMemberScope.Public);
+				var result = await members.SelectAsync<T>(_dialect, _connectionString, cancellationToken: cancellationToken);
+				return Operation.FromResult(result);
+			}
+			catch (StorageException e)
+			{
+				return Operation.FromResult(Enumerable.Empty<T>(), new List<Error>
+				{
+					new Error(ErrorEvents.AggregateErrors, e.Message)
+				});
+			}
+		}
+	}
+
 	public sealed class SqlObjectSaveStore : IObjectSaveStore
 	{
 		private readonly string _connectionString;
